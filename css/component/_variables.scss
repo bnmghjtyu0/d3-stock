@@ -1,0 +1,110 @@
+@import 'bourbon';
+$colors:#45baf7,
+#132035,
+#1C2A3F,
+#4c709a,
+#ffe451,
+#ff0000;
+$stockValue2Width:400px;
+$asideWidth:152px;
+$headHeight:70px;
+$mainTopHeight:110px;
+$fz:15px;
+.mr-20 {
+    margin-right: 20px;
+}
+
+.mr-40 {
+    margin-right: 40px;
+}
+
+.ml-auto {
+    margin-left: auto;
+}
+
+.mr-auto {
+    margin-right: auto;
+}
+
+.text-red {
+    color: nth($colors, 6);
+}
+
+.text-blue {
+    color: nth($colors, 1);
+}
+
+.text-gold {
+    color: nth($colors, 5);
+}
+
+.icon {
+    display: inline-block;
+    &.icon-menu {
+        width: 23px;
+        height: 17px;
+        background: url(../img/icon-menu.png) no-repeat;
+    }
+    &.icon-search {
+        width: 23px;
+        height: 23px;
+        background: url(../img/icon-search.png) no-repeat;
+    }
+    &.icon-power {
+        width: 21px;
+        height: 23px;
+        background: url(../img/icon-power.png) no-repeat;
+    }
+    &.icon-bell {
+        width: 19px;
+        height: 27px;
+        background: url(../img/icon-bell.png) no-repeat;
+    }
+    &.icon-setting {
+        width: 27px;
+        height: 27px;
+        background: url(../img/icon-setting.png) no-repeat;
+    }
+    &.icon-user {
+        width: 21px;
+        height: 27px;
+        background: url(../img/icon-user.png) no-repeat;
+    }
+    &.icon-fall {
+        width: 35px;
+        height: 20px;
+        background: url(../img/icon-fall.png) no-repeat;
+    }
+    &.icon-rise {
+        width: 35px;
+        height: 20px;
+        background: url(../img/icon-rise.png) no-repeat;
+    }
+}
+
+.btnHover {
+    &:hover {
+        opacity: 0.8;
+    }
+}
+
+.btn-gradient-main {
+    position: relative;
+    background: linear-gradient(0deg, #009EF3, #00CBF9);
+    font-size: em($fz + 7px);
+    color: #fff;
+    border-radius: 99px;
+    width: 140px;
+    padding: 8px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    i {
+        margin-right: 6px;
+    }
+    &:hover {
+        background: linear-gradient(0deg, #009EF3, #00CBF9);
+        color: #fff;
+    }
+}
