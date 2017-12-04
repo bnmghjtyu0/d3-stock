@@ -2,10 +2,10 @@
 $colors:#45baf7,
 #132035,
 #1C2A3F,
-#4c709a,
+#4b6f99,
 #ffe451,
 #ff0000;
-$stockValue2Width:400px;
+$stockValue2Width:490px;
 $asideWidth:152px;
 $headHeight:70px;
 $mainTopHeight:110px;
@@ -82,15 +82,9 @@ $fz:15px;
     }
 }
 
-.btnHover {
-    &:hover {
-        opacity: 0.8;
-    }
-}
-
 .btn-gradient-main {
     position: relative;
-    background: linear-gradient(0deg, #009EF3, #00CBF9);
+    background: linear-gradient(0deg, #00a0f7 0%, #00b4f9 43%, #20c1ff 61%, #00cbfb 100%);
     font-size: em($fz + 7px);
     color: #fff;
     border-radius: 99px;

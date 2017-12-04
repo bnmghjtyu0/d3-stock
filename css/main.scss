@@ -11,7 +11,7 @@ body {
 }
 
 aside {
-    background: linear-gradient(180deg, #132035, #0C182B);
+    background: linear-gradient(0deg, #051127, #0b1931);
     width: $asideWidth;
     height: calc(100% - #{$headHeight});
     position: absolute;
@@ -60,8 +60,16 @@ aside {
                 }
                 &:hover,
                 &.active {
-                    background: linear-gradient(0deg, #0C1C3A, #162D51);
-                    border-left: 4px solid #45baf7;
+                    position: relative;
+                    background: linear-gradient(0deg, #061639, #122951);
+                    &:before {
+                        content: '';
+                        position: absolute;
+                        left: 0;
+                        width: 4px;
+                        height: 100%;
+                        background: linear-gradient(0deg, #00a0f7 0%, #00b4f9 43%, #20c1ff 61%, #00cbfb 100%);
+                    }
                     .pic {
                         i {
                             &.icon {
@@ -90,7 +98,7 @@ aside {
     display: flex;
     width: 100%;
     height: $headHeight;
-    background: nth($colors, 3);
+    background: linear-gradient(0deg, #152439, #18273e);
     border-bottom: 1px solid nth($colors, 4);
     border: none;
     margin: 0;
@@ -133,7 +141,7 @@ aside {
         display: flex;
         align-items: center;
         justify-content: center;
-        background: nth($colors, 2);
+        background: linear-gradient(0deg, #051127, #0b1931);
         position: absolute;
         left: 0;
         .logo {
@@ -150,7 +158,7 @@ main {
     .m-top {
         display: flex;
         align-items: center;
-        background: nth($colors, 3);
+        background: linear-gradient(0deg, #152439, #18273e);
         height: $mainTopHeight;
         .mr-auto {
             margin-left: 30px;
@@ -183,7 +191,7 @@ main {
                 }
                 .item {
                     position: relative;
-                    padding: 20px;
+                    padding: 20px 60px;
                     .subText {
                         font-size: em($fz + 6px);
                         color: #74a1d3;
@@ -206,9 +214,11 @@ main {
         .stockValue2 {
             flex-basis: $stockValue2Width;
             width: $stockValue2Width;
-            background: nth($colors, 2);
+            background: linear-gradient(#061633, #0e2343);
             height: 100%;
             padding: 0 2%;
+            overflow-x: hidden;
+            overflow-y: visible;
             .panel-group {
                 margin-top: 40px;
                 .panel-heading {
@@ -239,7 +249,7 @@ main {
                             padding: 5px 20px;
                             font-size: em($fz + 6px);
                             color: nth($colors, 4);
-                            background: nth($colors, 2);
+                            background: inherit;
                         }
                         .num {
                             margin-top: 6px;
@@ -281,4 +291,69 @@ main {
             }
         }
     }
+}
+
+// d3js
+// 儀錶板
+.unselectable {
+    -moz-user-select: -moz-none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.indicator {
+    transform: translate(100px, 170px);
+}
+
+.gauge .axis {
+    transform: translate(100px, 100px);
+}
+
+
+/* css formats for the gauge */
+
+.gauge .domain {
+    stroke-width: 1px;
+    stroke: #6581a1;
+}
+
+// 刻度
+// .gauge .tick line {
+//     stroke: #6581a1;
+//     stroke-width: 2px;
+// }
+// .gauge line {
+//     stroke: #6581a1;
+// }
+.gauge .arc,
+.gauge .cursor {
+    opacity: 0;
+}
+
+.gauge .major {
+    fill: #657180;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.gauge .indicator {
+    stroke: #fff;
+    fill: #000;
+    stroke-width: 4px;
+}
+
+
+/* css formats for the segment display */
+
+.segdisplay .on {
+    fill: #00FFFF;
+    display: none;
+}
+
+.segdisplay .off {
+    fill: #00FFFF;
+    opacity: 0.15;
+    display: none;
 }
