@@ -1,178 +1,253 @@
 // ---------------------------------------------------------------------
 // 長條圖
 // ---------------------------------------------------------------------
-var data = [
-  30, 60, 90, 200, 110, 222, 666,
-  200, 400, 500, 200, 110, 222,
-  666, 999, 200, 110, 222, 666,
-  999, 200, 999, 200, 110, 222,
-  666, 999, 200, 110, 222, 666,
-  999, 200, 400, 500, 222, 666,
-  999, 200, 110, 222, 666,
-  999, 200, 999, 200, 110, 222,
-  666, 999, 200, 110, 222, 666,
-  999, 200, 400, 500, 222, 666,
-  999, 999, 200, 110, 222, 666,
-  999, 200, 999, 200, 110, 222,],
+var LongData = [
+  30,
+  60,
+  90,
+  200,
+  110,
+  222,
+  666,
+  200,
+  400,
+  500,
+  200,
+  110,
+  222,
+  666,
+  999,
+  200,
+  110,
+  222,
+  666,
+  999,
+  200,
+  999,
+  200,
+  110,
+  222,
+  666,
+  999,
+  200,
+  110,
+  222,
+  666,
+  999,
+  200,
+  400,
+  500,
+  222,
+  666,
+  999,
+  200,
+  110,
+  222,
+  666,
+  999,
+  200,
+  999,
+  200,
+  110,
+  222,
+  666,
+  999,
+  200,
+  110,
+  222,
+  666,
+  999,
+  200,
+  400,
+  500,
+  222,
+  666,
+  999,
+  999,
+  200,
+  110,
+  222,
+  666,
+  999,
+  200,
+  999,
+  200,
+  110,
+  222
+],
   colors = ["#ff0000", "#0cd562", "#fff"],
-  width = 1200,
-  height = 200,
   padding = 60,
   barWidth = 60,
   outerPadding = 0.2,
   barPadding = 0.2;
 
-var colorScale = d3.scale
-  .linear()
-  .domain([0, d3.max(data)])
-  .range(colors);
+var longBarChart = d3.select("#longBarChart");
 
-var xScale = d3.scale
-  .ordinal()
-  .domain(d3.range(0, data.length))
-  .rangeBands([padding, width - padding], barPadding, outerPadding);
-
-var yScale = d3.scale
-  .linear()
-  .domain([d3.max(data), 0])
-  .range([height - padding * 2, 0]);
-
-var yAxisScale = d3.scale
-  .linear()
-  .domain([Math.round(d3.max(data)), 0])
-  .range([0, height - padding * 2]);
-
-var xAxis = d3.svg
-  .axis()
-  .scale(xScale)
-  .orient("bottom")
-
-var yAxis = d3.svg
-  .axis()
-  .scale(yAxisScale)
-  .orient("left")
-  .ticks(7);
-
-var chart = d3
-  .select("#chart")
-  .style("background", "#0e161f")
-  .append("svg")
-  .attr("width", width)
-  .attr("height", height);
-
-var chartBars = chart
-  .selectAll("rect")
-  .data(data)
-  .enter()
-  .append("rect")
-  .attr("class", "chart-bar")
-  .attr("width", function (d) {
-    return xScale.rangeBand();
-  })
-  .attr("height", 0)
-  .attr("fill", function (d) {
-    if (d > 600) {
-      return colors[1];
-    } else if (d >= 0 && d <= 200) {
-      return colors[2];
-    } else {
-      return colors[0];
-    }
-  })
-  .attr("x", function (d, i) {
-    return xScale(i);
-  })
-  .attr("y", height - padding);
-
-var labelSVG = chart
-  .selectAll("svg")
-  .data(data)
-  .enter()
-  .append("svg")
-  .attr("class", "chart-label-svg")
-  .attr("width", 80)
-  .attr("height", 30)
-  .attr("x", function (d, i) {
-    return xScale(i) + xScale.rangeBand();
-  })
-  .attr("y", function (d) {
-    return height - yScale(d) - padding - 30;
-  })
-  .style("opacity", "0")
-  .append("g");
-
-labelSVG
-  .append("rect")
-  .attr("class", "chart-label-rect")
-  .attr("width", 60)
-  .attr("height", 30)
-  .attr("x", 0)
-  .attr("y", 0)
-  .attr("fill", "white");
-
-labelSVG
-  .append("text")
-  .attr("x", "50%")
-  .attr("y", "50%")
-  .attr("text-anchor", "middle")
-  .attr("alignment-baseline", "middle")
-  .attr("fill", "#1695A3")
-  .text(function (d) {
-    return d;
+function renderingLongBar() {
+  // 將畫布尺寸改成即時取得的寬高
+  var margin = 40;
+  var width = parseInt(d3.select("#longBarChart").style("width"), 10);
+  var height = parseInt(d3.select("#longBarChart").style("height"), 10);
+  longBarChart.html("");
+  longBarChart.attr({
+    width: width + margin * 1.5,
+    height: height + margin * 2,
   });
 
-var xAxisG = chart
-  .append("g")
-  .attr("class", "axis")
-  .attr("transform", "translate(0," + (height - padding) + ")")
-  .attr("fill", 'none')
-  .attr('stroke', '#2f4a6b')
-  .attr("font-size", "12px")
-  .call(xAxis);
+  var colorScale = d3.scale
+    .linear()
+    .domain([0, d3.max(LongData)])
+    .range(colors);
 
-var yAxisG = chart
-  .append("g")
-  .attr("class", "axis")
-  .attr("transform", "translate(" + padding + ", " + padding + ")")
-  .attr("fill", 'none')
-  .attr('stroke', '#2f4a6b')
-  .attr("font-size", "12px")
-  .call(yAxis);
+  var xScale = d3.scale
+    .ordinal()
+    .domain(d3.range(0, LongData.length))
+    .rangeBands([padding, width - padding], barPadding, outerPadding);
 
-var rectTransitions = chartBars
-  .on("mouseenter", function (d, i) {
-    d3
-      .selectAll(".chart-label-svg")
-      .filter(function (e, j) {
-        if (i === j) {
-          return this;
-        }
-      })
-      .style("opacity", "1.0");
-  })
-  .on("mouseleave", function (d, i) {
-    d3
-      .selectAll(".chart-label-svg")
-      .filter(function (e, j) {
-        if (i === j) {
-          return this;
-        }
-      })
-      .style("opacity", "0");
-  })
-  .transition()
-  .duration(600)
-  .delay(function (d, i) {
-    return i * 15;
-  })
-  .ease("linear")
-  .attr("height", function (d) {
-    return yScale(d);
-  })
-  .attr("y", function (d) {
-    return height - yScale(d) - padding;
-  });
+  var yScale = d3.scale
+    .linear()
+    .domain([d3.max(LongData), 0])
+    .range([height - padding * 2, 0]);
 
+  var yAxisScale = d3.scale
+    .linear()
+    .domain([Math.round(d3.max(LongData)), 0])
+    .range([0, height - padding * 2]);
+
+  var xAxis = d3.svg
+    .axis()
+    .scale(xScale)
+    .orient("bottom")
+    .ticks(3);
+
+  var yAxis = d3.svg
+    .axis()
+    .scale(yAxisScale)
+    .orient("left")
+    .ticks(3);
+
+  var chart = longBarChart
+    .style("background", "#0e161f")
+    .append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+  var chartBars = chart
+    .selectAll("rect")
+    .data(LongData)
+    .enter()
+    .append("rect")
+    .attr("class", "chart-bar")
+    .attr("width", function (d) {
+      return xScale.rangeBand();
+    })
+    .attr("height", 0)
+    .attr("fill", function (d) {
+      if (d > 600) {
+        return colors[1];
+      } else if (d >= 0 && d <= 200) {
+        return colors[2];
+      } else {
+        return colors[0];
+      }
+    })
+    .attr("x", function (d, i) {
+      return xScale(i);
+    })
+    .attr("y", height - padding);
+
+  var labelSVG = chart
+    .selectAll("svg")
+    .data(LongData)
+    .enter()
+    .append("svg")
+    .attr("class", "chart-label-svg")
+    .attr("width", 80)
+    .attr("height", 30)
+    .attr("x", function (d, i) {
+      return xScale(i) + xScale.rangeBand();
+    })
+    .attr("y", function (d) {
+      return height - yScale(d) - padding - 30;
+    })
+    .style("opacity", "0")
+    .append("g");
+
+  labelSVG
+    .append("rect")
+    .attr("class", "chart-label-rect")
+    .attr("width", 60)
+    .attr("height", 30)
+    .attr("x", 0)
+    .attr("y", 0)
+    .attr("fill", "white");
+
+  labelSVG
+    .append("text")
+    .attr("x", "50%")
+    .attr("y", "50%")
+    .attr("text-anchor", "middle")
+    .attr("alignment-baseline", "middle")
+    .attr("fill", "#1695A3")
+    .text(function (d) {
+      return d;
+    });
+
+  var xAxisG = chart
+    .append("g")
+    .attr("class", "axis")
+    .attr("transform", "translate(0," + (height - padding) + ")")
+    .attr("fill", "none")
+    .attr("stroke", "#2f4a6b")
+    .attr("font-size", "12px")
+    .call(xAxis);
+
+  var yAxisG = chart
+    .append("g")
+    .attr("class", "axis")
+    .attr("transform", "translate(" + padding + ", " + padding + ")")
+    .attr("fill", "none")
+    .attr("stroke", "#2f4a6b")
+    .attr("font-size", "12px")
+    .call(yAxis);
+
+  var rectTransitions = chartBars
+    .on("mouseenter", function (d, i) {
+      d3
+        .selectAll(".chart-label-svg")
+        .filter(function (e, j) {
+          if (i === j) {
+            return this;
+          }
+        })
+        .style("opacity", "1.0");
+    })
+    .on("mouseleave", function (d, i) {
+      d3
+        .selectAll(".chart-label-svg")
+        .filter(function (e, j) {
+          if (i === j) {
+            return this;
+          }
+        })
+        .style("opacity", "0");
+    })
+    .transition()
+    .duration(600)
+    .delay(function (d, i) {
+      return i * 15;
+    })
+    .ease("linear")
+    .attr("height", function (d) {
+      return yScale(d);
+    })
+    .attr("y", function (d) {
+      return height - yScale(d) - padding;
+    });
+}
+
+// 將 window 綁定 resize 事件，並重新繪製圖型
+renderingLongBar();
 
 
 // ---------------------------------------------------------------------
@@ -180,10 +255,10 @@ var rectTransitions = chartBars
 // ---------------------------------------------------------------------
 var svg = d3.select("#speedometer")
   .append("svg:svg")
-  .attr("width", 320)
-  .attr("height", 320);
+  .attr("width", 200)
+  .attr("height", 200);
 var gauge = iopctrl.arcslider()
-  .radius(90)
+  .radius(86)
   .events(false)
   .indicator(iopctrl.defaultGaugeIndicator)
 
@@ -222,10 +297,28 @@ svg.append('g')
   .attr('fill', 'red')
   .attr('stroke-width', '4px')
 
-
 svg.append("g")
   .attr("class", "segdisplay")
   .call(segDisplay);
+
+svg.append('defs')
+  .append('clipPath')
+  .attr('id', "a1")
+  .append('rect')
+  .attr('x', -20)
+  .attr('y', -20)
+  .attr('width', 100)
+  .attr('height', 190)
+
+svg.append('circle')
+  .attr('clip-path', 'url(#a1)')
+  .attr("cx", "96")
+  .attr("cy", "96")
+  .attr("r", "96")
+  .attr('stroke-width', '5px')
+  .attr('stroke', '#0CD562')
+  .attr('fill', 'none')
+  .attr('transform', 'translate(4,4)')
 
 svg.append("g")
   .attr("class", "gauge")
@@ -239,70 +332,77 @@ gauge.value(-100);
 // 儀錶板2
 // ---------------------------------------------------------------------
 var svg = d3.select("#speedometer2")
-.append("svg:svg")
-.attr("width", 320)
-.attr("height", 320);
+  .append("svg:svg")
+  .attr("width", 200)
+  .attr("height", 200);
 var gauge = iopctrl.arcslider()
-.radius(90)
-.events(false)
-.indicator(iopctrl.defaultGaugeIndicator)
+  .radius(86)
+  .events(false)
+  .indicator(iopctrl.defaultGaugeIndicator)
 
 gauge.axis().orient("in")
-.normalize(true)
-.ticks(12)
-.tickSubdivide(3)
-.tickSize(4, 8, 10)
-.tickPadding(5)
-.scale(d3.scale.linear()
-  .domain([-400, 400])
-  .range([-3 * Math.PI / 4, 3 * Math.PI / 4]));
+  .normalize(true)
+  .ticks(12)
+  .tickSubdivide(3)
+  .tickSize(4, 8, 10)
+  .tickPadding(5)
+  .scale(d3.scale.linear()
+    .domain([-400, 400])
+    .range([-3 * Math.PI / 4, 3 * Math.PI / 4]));
 
 
 var segDisplay = iopctrl.segdisplay()
-.width(80)
-.digitCount(6)
-.negative(false)
-.decimals(0);
+  .width(80)
+  .digitCount(6)
+  .negative(false)
+  .decimals(0);
 
 gauge.indicator(function (g, r) {
-// g.append("path").attr("d", "M0 " + 0.2 * r + " L 0 " + -0.8 * r + "")
-g.append("path").attr("d", "M-4 " + 0 * r + " L 0 " + -0.6 * r + " L4 " + 0 * r + " z")
-  .attr('fill', '#fff')
-  .attr('stroke', 'none')
-g.append("circle")
-  .attr("r", 0.09 * r)
-  .attr('fill', '#061633')
-  .attr('stroke-width', '4px')
+  // g.append("path").attr("d", "M0 " + 0.2 * r + " L 0 " + -0.8 * r + "")
+  g.append("path").attr("d", "M-4 " + 0 * r + " L 0 " + -0.6 * r + " L4 " + 0 * r + " z")
+    .attr('fill', '#fff')
+    .attr('stroke', 'none')
+  g.append("circle")
+    .attr("r", 0.09 * r)
+    .attr('fill', '#061633')
+    .attr('stroke-width', '4px')
+    
 })
 svg.append('g')
-.attr('class', 'circleStyle')
-.append('path')
-.attr("d", "M0,2.1h0.1c0,0-0.1-1.4,1-2L1,0C1,0-0.1,0.4,0,2.1z")
-.attr('fill', 'red')
-.attr('stroke-width', '4px')
+  .attr('class', 'circleStyle')
+  .append('path')
+  .attr("d", "M0,2.1h0.1c0,0-0.1-1.4,1-2L1,0C1,0-0.1,0.4,0,2.1z")
+  .attr('fill', 'red')
+  .attr('stroke-width', '4px')
+  
 
+
+svg.append('circle')
+  .attr('clip-path', 'url(#a1)')
+  .attr("cx", "96")
+  .attr("cy", "96")
+  .attr("r", "96")
+  .attr('stroke-width', '5px')
+  .attr('stroke', '#ff0000')
+  .attr('fill', 'none')
+  .attr('transform', 'translate(4,4)')
+svg.append("g")
+  .attr("class", "segdisplay")
+  .call(segDisplay);
 
 svg.append("g")
-.attr("class", "segdisplay")
-.call(segDisplay);
-
-svg.append("g")
-.attr("class", "gauge")
-.call(gauge);
+  .attr("class", "gauge")
+  .call(gauge);
 
 segDisplay.value(56749);
 gauge.value(0);
 
 
 
-
-
-
-
 // ---------------------------------------------------------------------
 // 折線圖
 // ---------------------------------------------------------------------
-var data = [
+var Linedata = [
   { x: 01, y: 10770 },
   { x: 02, y: 10764 },
   { x: 03, y: 10768 },
@@ -325,155 +425,170 @@ var data = [
   { x: 20, y: 10762 },
   { x: 21, y: 10764 },
 ];
-// svg的size
-var width = 1100;
-var height = 420;
 
-// 畫外框
-var svg = d3
-  .select(".d3")
-  .append("svg")
-  .attr({
-    width: "1200",
-    height: "480"
-  })
+var lineChart = d3.select('#lineChart');
 
-// 找出資料內的最大最小值 max&min
-var minX = d3.min(data, function (d) {
-  return d.x;
-});
-var maxX = d3.max(data, function (d) {
-  return d.x;
-});
-var minY = d3.min(data, function (d) {
-  return d.y;
-});
-var maxY = d3.max(data, function (d) {
-  return d.y;
-});
+function renderingLineBar() {
+  // svg的size
+  var margin = 40;
+  var width = parseInt(d3.select("#lineChart").style("width"), 10) - margin * 2;
+  var height = parseInt(d3.select("#lineChart").style("height"), 10) - margin * 2;
 
-var scaleX = d3.scale
-  .linear()
-  .range([0, width])
-  .domain([minX, maxX]);
-var scaleY = d3.scale
-  .linear()
-  .range([0, height])
-  .domain([maxY, minY]);
+  lineChart.html('');
+  // 畫外框
+  var svg = lineChart
+    .append("svg")
+    .attr({
+      'width': width + margin * 2,
+      'height': height + margin * 2,
+    })
 
-// 加入參數 scaleX(),scaleY()
-var line = d3.svg
-  .line()
-  .x(function (d) {
-    return scaleX(d.x);
-  })
-  .y(function (d) {
-    return scaleY(d.y);
+
+
+  // 找出資料內的最大最小值 max&min
+  var minX = d3.min(Linedata, function (d) {
+    return d.x;
+  });
+  var maxX = d3.max(Linedata, function (d) {
+    return d.x;
+  });
+  var minY = d3.min(Linedata, function (d) {
+    return d.y;
+  });
+  var maxY = d3.max(Linedata, function (d) {
+    return d.y;
   });
 
-// 設定坐標軸
-// axis.orient([orientation])
-var axisX = d3.svg
-  .axis()
-  .scale(scaleX)
-  .orient("bottom")
-  .ticks(20)
-  // .tickValues([1, 2, 3, 5, 7, 9])  //可自訂底層的數值
-  .tickFormat(function (d) {
-    return d;
-  })//加入單位
-  .tickPadding(6);
+  var scaleX = d3.scale
+    .linear()
+    .range([0, width])
+    .domain([minX, maxX]);
+  var scaleY = d3.scale
+    .linear()
+    .range([0, height])
+    .domain([maxY, minY]);
 
-var axisY = d3.svg
-  .axis()
-  .scale(scaleY)
-  .orient("left")
-  .ticks(10)
-  .tickFormat(function (d) {
-    return d;
-  }) //加入單位
-  .tickPadding(6);
+  // 加入參數 scaleX(),scaleY()
+  var line = d3.svg
+    .line()
+    .x(function (d) {
+      return scaleX(d.x);
+    })
+    .y(function (d) {
+      return scaleY(d.y);
+    });
 
-// 把線加入svg
-svg.append("path").attr({
-  d: line(data),
-  stroke: "#e7f3ff",
-  fill: "none",
-  transform: "translate(60,20)" //折線圖也要套用 translate
-});
+  // 設定坐標軸
+  // axis.orient([orientation])
+  var axisX = d3.svg
+    .axis()
+    .scale(scaleX)
+    .orient("bottom")
+    .ticks(20)
+    // .tickValues([1, 2, 3, 5, 7, 9])  //可自訂底層的數值
+    .tickFormat(function (d) {
+      return d;
+    })//加入單位
+    .tickPadding(6);
 
-// x坐標軸
-svg
-  .append("g")
-  .call(axisX) //call axisX
-  .attr({
+  var axisY = d3.svg
+    .axis()
+    .scale(scaleY)
+    .orient("left")
+    .ticks(10)
+    .tickFormat(function (d) {
+      return d;
+    }) //加入單位
+    .tickPadding(6);
+
+  // 把線加入svg
+  svg.append("path").attr({
+    d: line(Linedata),
+    stroke: "#e7f3ff",
     fill: "none",
-    stroke: "#2f4a6b",
-    transform: "translate(60," + (height + 20) + ")"
-  })
-  .style({
-    "font-size": "11px"
-  })
-  .selectAll("text")
-  .attr({
-    fill: "#e7f3ff",
-    stroke: "none"
-  })
-  .style({
-    "font-size": "12px"
+    transform: "translate(60,20)" //折線圖也要套用 translate
   });
 
-// y坐標軸
-svg
-  .append("g")
-  .call(axisY) //call axisY
-  .attr({
-    fill: "none",
-    stroke: "#2f4a6b",
-    transform: "translate(60,20)"
-  })
-  .selectAll("text")
-  .attr({
-    fill: "#e7f3ff",
-    stroke: "none"
-  })
-  .style({
-    "font-size": "12px"
-  });
+  // x坐標軸
+  svg
+    .append("g")
+    .call(axisX) //call axisX
+    .attr({
+      fill: "none",
+      stroke: "#2f4a6b",
+      transform: "translate(60," + (height + 20) + ")"
+    })
+    .style({
+      "font-size": "11px"
+    })
+    .selectAll("text")
+    .attr({
+      fill: "#e7f3ff",
+      stroke: "none"
+    })
+    .style({
+      "font-size": "12px"
+    });
 
-// tickSize 表達的是座標軸上刻度線條的尺寸 (需再創一組 svg.append('g'))
-var axisXGrid = d3.svg
-  .axis()
-  .scale(scaleX)
-  .orient("bottom")
-  .ticks(20)
-  .tickFormat("")
-  .tickSize(-height, 0);
+  // y坐標軸
+  svg
+    .append("g")
+    .call(axisY) //call axisY
+    .attr({
+      fill: "none",
+      stroke: "#2f4a6b",
+      transform: "translate(60,20)"
+    })
+    .selectAll("text")
+    .attr({
+      fill: "#e7f3ff",
+      stroke: "none"
+    })
+    .style({
+      "font-size": "12px"
+    });
 
-var axisYGrid = d3.svg
-  .axis()
-  .scale(scaleY)
-  .orient("left")
-  .ticks(10)
-  .tickFormat("")
-  .tickSize(-width, 0);
+  // tickSize 表達的是座標軸上刻度線條的尺寸 (需再創一組 svg.append('g'))
+  var axisXGrid = d3.svg
+    .axis()
+    .scale(scaleX)
+    .orient("bottom")
+    .ticks(20)
+    .tickFormat("")
+    .tickSize(-height, 0);
 
-svg
-  .append("g")
-  .call(axisXGrid) //call axisX
+  var axisYGrid = d3.svg
+    .axis()
+    .scale(scaleY)
+    .orient("left")
+    .ticks(10)
+    .tickFormat("")
+    .tickSize(-width, 0);
 
-  .attr({
-    fill: "none",
-    stroke: "#2f4a6b",
-    transform: "translate(60," + (height + 20) + ")"
-  });
-svg
-  .append("g")
-  .call(axisYGrid) //call axisY
-  .attr({
-    fill: "none",
-    stroke: "#2f4a6b",
-    transform: "translate(60,20)"
-  });
+  svg
+    .append("g")
+    .call(axisXGrid) //call axisX
+
+    .attr({
+      fill: "none",
+      stroke: "#2f4a6b",
+      transform: "translate(60," + (height + 20) + ")"
+    });
+  svg
+    .append("g")
+    .call(axisYGrid) //call axisY
+    .attr({
+      fill: "none",
+      stroke: "#2f4a6b",
+      transform: "translate(60,20)"
+    });
+}
+
+// 將 window 綁定 resize 事件，並重新繪製圖型
+renderingLineBar();
 
 
+d3.select(window).on('resize', function (e) {
+  renderingLongBar(e);
+  renderingLineBar(e);
+})

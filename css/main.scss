@@ -205,14 +205,18 @@ main {
         }
     }
     .m-main {
-        display: flex;
-        align-items: stretch;
         height: 100%;
+        &:after {
+            content: '';
+            clear: both;
+            display: block;
+        }
         .chart {
-            flex: 1;
+            float: left;
+            width: calc(100% - #{$stockValue2Width});
         }
         .stockValue2 {
-            flex-basis: $stockValue2Width;
+            float: left;
             width: $stockValue2Width;
             background: linear-gradient(#061633, #0e2343);
             height: 100%;
@@ -294,6 +298,28 @@ main {
 }
 
 // d3js
+// 長條圖
+#longBarChart {
+    display: block;
+    width: 100%;
+    height: 300px;
+    min-width: 300px;
+    max-width: 1200px;
+    max-height: 200px;
+    overflow: hidden;
+}
+
+// 折線圖
+#lineChart {
+    display: block;
+    width: 100%;
+    height: 500px;
+    min-width: 300px;
+    max-width: 1200px;
+    max-height: 600px;
+    overflow: hidden;
+}
+
 // 儀錶板
 .unselectable {
     -moz-user-select: -moz-none;
