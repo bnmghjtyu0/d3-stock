@@ -89,7 +89,7 @@ iopctrl = function() {
     iopctrl.ledarray = function() {
         var width = 20, count = 20, padding = 4, vertical = true;
         var value;
-        var scale = d3.scale.linear()
+        var scale = d3.scaleLinear()
             .range([200, 0]);
         var thresholds = d3.scale.threshold()
             .domain([0.5, 0.8])
@@ -171,7 +171,7 @@ iopctrl = function() {
         var margin = {"top": 20, "left": 20, "bottom": 20, "right": 20};
         var axis = d3.svg.axis()
             .orient("bottom")
-            .scale(d3.scale.linear()
+            .scale(d3.scaleLinear()
                 .range([0, 500]));
         var bands = [];
         var _cursorUpdate, _pointerUpdate;
@@ -455,7 +455,7 @@ iopctrl = function() {
         var radius = 100, minEventInterval = 100, enableFlick = true, transitionDuration = 500, arcFactor = 0.5, events = true, moveToTouch = true, ease = "cubic-out";
         var margin = {"top": 50, "left": 50, "bottom": 50, "right": 50};
         var axis = iopctrl.arcaxis()
-            .scale(d3.scale.linear()
+            .scale(d3.scaleLinear()
                 .range([- 3* Math.PI / 4, 3* Math.PI / 4]))
             .orient("out")
             .outerRadius(radius)
@@ -909,7 +909,7 @@ iopctrl = function() {
     
     
     iopctrl.arcaxis = function() {
-        var scale = d3.scale.linear(), outerRadius = 100, innerRadius = 100, orient = "out", tickMajorSize = 6, tickMinorSize = 4, tickEndSize = 6, tickPadding = 3, tickArguments_ = [ 10 ], tickValues = null, tickFormat_, tickSubdivide = 0, normalize = true;
+        var scale = d3.scaleLinear(), outerRadius = 100, innerRadius = 100, orient = "out", tickMajorSize = 6, tickMinorSize = 4, tickEndSize = 6, tickPadding = 3, tickArguments_ = [ 10 ], tickValues = null, tickFormat_, tickSubdivide = 0, normalize = true;
         function arcaxis(g) {
             g.each(function() {
                 var g = d3.select(this);

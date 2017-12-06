@@ -205,7 +205,8 @@ main {
         }
     }
     .m-main {
-        height: 100%;
+        display: flex;
+        align-items: stretch;
         &:after {
             content: '';
             clear: both;
@@ -219,7 +220,6 @@ main {
             float: left;
             width: $stockValue2Width;
             background: linear-gradient(#061633, #0e2343);
-            height: 100%;
             padding: 0 2%;
             overflow-x: hidden;
             overflow-y: visible;
@@ -307,10 +307,22 @@ main {
     max-width: 1200px;
     max-height: 200px;
     overflow: hidden;
+    .domain {
+        stroke: #48678b;
+    }
+    .tick {
+        line {
+            stroke: #48678b;
+        }
+        text {
+            fill: #abd2ff;
+            stroke: none;
+        }
+    }
 }
 
-// 折線圖
-#lineChart {
+// k棒
+#Candlestick {
     display: block;
     width: 100%;
     height: 500px;
@@ -318,68 +330,32 @@ main {
     max-width: 1200px;
     max-height: 600px;
     overflow: hidden;
+    .domain {
+        stroke: #48678b;
+    }
+    .tick {
+        text {
+            fill: #abd2ff;
+            stroke: none;
+        }
+    }
 }
 
 // 儀錶板
-.unselectable {
-    -moz-user-select: -moz-none;
-    -khtml-user-select: none;
-    -webkit-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
+#speedometer {
+    .label {
+        text{
+            fill:#657180;
+            font-size:13px;
+        }
+    }
 }
 
-.indicator {
-    transform: translate(100px, 170px);
-}
-
-.gauge .axis {
-    transform: translate(100px, 100px);
-}
-
-
-/* css formats for the gauge */
-
-.gauge .domain {
-    stroke-width: 1px;
-    stroke: #6581a1;
-}
-
-// 刻度
-// .gauge .tick line {
-//     stroke: #6581a1;
-//     stroke-width: 2px;
-// }
-// .gauge line {
-//     stroke: #6581a1;
-// }
-.gauge .arc,
-.gauge .cursor {
-    opacity: 0;
-}
-
-.gauge .major {
-    fill: #657180;
-    font-size: 16px;
-    font-weight: bold;
-}
-
-.gauge .indicator {
-    stroke: #fff;
-    fill: #000;
-    stroke-width: 4px;
-}
-
-
-/* css formats for the segment display */
-
-.segdisplay .on {
-    fill: #00FFFF;
-    display: none;
-}
-
-.segdisplay .off {
-    fill: #00FFFF;
-    opacity: 0.15;
-    display: none;
+#speedometer2 {
+    .label {
+        text{
+            fill:#657180;
+            font-size:13px;
+        }
+    }
 }
