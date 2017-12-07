@@ -121,6 +121,7 @@ aside {
     border: none;
     margin: 0;
     padding-left: $asideWidth;
+    z-index: 1020;
     .navbar-collapse {
         width: 100%;
         display: flex !important;
