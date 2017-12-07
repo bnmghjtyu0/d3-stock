@@ -1,0 +1,139 @@
+$labelColors:#496169,
+#f56767,
+#f5c47a,
+#71d189,
+#65b3f0;
+@for $i from 1 through 5 {
+    .#{badegBg}#{$i} {
+        background: nth($labelColors, $i)
+    }
+}
+
+.badge {
+    border-radius: 25px;
+    font-size: em($fz);
+    padding: 5px 12px;
+}
+
+.table-responsive {
+    border-collapse: collapse;
+    width: 100%;
+    caption {
+        text-align: left;
+    }
+    thead {
+        th {
+            background-color: none;
+            color: #444444;
+            text-align: left;
+        }
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .table-responsive {
+        caption {
+            font-style: normal;
+            background-color: rgba(0, 0, 0, 0.35);
+            color: #fff;
+            font-weight: bold;
+        }
+        thead {
+            display: none;
+        }
+        tbody {
+            tr {
+                border-bottom: 1px solid #ccc;
+                td {
+                    display: flex;
+                    &:before {
+                        display: block;
+                        flex-basis: 80px;
+                        font-weight: bold;
+                    }
+                }
+            }
+        }
+    }
+}
+
+#table01 {
+    thead {
+        th {
+            &:nth-of-type(1) {
+                text-align: center;
+            }
+        }
+    }
+    tbody {
+        tr {
+            td {
+                &:nth-of-type(1) {
+                    text-align: center
+                }
+            }
+        }
+    }
+}
+
+.tableStyle01 {
+    thead {
+        tr {
+            border: 1px solid #A2A3A9;
+            th {
+                background: #E8EBF4;
+                text-align: center;
+                font-size: em($fz + 5);
+                border: 1px solid #929396;
+                font-weight: bold;
+                color: #000;
+            }
+        }
+    }
+    tbody {
+        tr {
+            td {
+                border: 1px solid #C6C6C6;
+                text-align: center;
+                font-size: em($fz + 5);
+            }
+        }
+    }
+}
+
+.tableStyle02 {
+    thead {
+        tr {
+            th {
+                font-size: em($fz*1.33);
+                padding: 20px 8px;
+            }
+        }
+    }
+    tbody {
+        tr {
+            border: 1px solid #e4e4e4;
+            td {
+                background: #fff;
+                padding: 20px 8px;
+                font-size: em($fz*1.33);
+                &:before {
+                    display: none;
+                }
+                a {
+                    color: #0099ff;
+                    font-weight: bold;
+                }
+            }
+            &:hover {
+                td {
+                    background: #f4fbff;
+                    color: #999999;
+                    a {
+                        color: #0099ff;
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,19 @@
+
+.btn {
+    border: none;
+    border-radius: 25px;
+    padding: 8px 4rem;
+    font-size: em($fz + 5px);
+    &:hover {
+        opacity: 0.8;
+    }
+}
+
+.btn-primary {
+    background: nth($basicColor, 1);
+    &:hover,
+    &:active,
+    &:focus {
+        background: nth($basicColor, 1) !important;
+    }
+}

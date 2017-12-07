@@ -1,0 +1,19 @@
+.icon {
+    display: inline-block;
+    background-repeat: no-repeat;
+    &.icon-arrow-l {
+        width: 10px;
+        height: 17px;
+        background: url(../img/icon-arrow-l.png);
+    }
+    &.icon-arrow-r {
+        width: 10px;
+        height: 16px;
+        background: url(../img/icon-arrow-r.png);
+    }
+    &.icon-dots {
+        width: 12px;
+        height: 2px;
+        background: url(../img/icon-dots.png);
+    }
+}

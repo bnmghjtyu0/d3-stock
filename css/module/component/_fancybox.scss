@@ -1,0 +1,38 @@
+.f-box {
+    max-width: 1000px;
+    width: 90%;
+    background-image: url(../img/fancybox_bg1.png);
+    background-repeat: no-repeat;
+    background-position-y: bottom;
+    background-size: contain;
+    padding-bottom: 4%;
+    border-radius: 15px;
+    &.message {
+        .f-header {
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 12px;
+            .title {
+                font-size: em($fz + 15px);
+                font-weight: bold;
+                margin: 0;
+            }
+            .sub-title {
+                display: block;
+                margin-top: 20px;
+                margin-bottom: 0;
+                color: nth($basicColor, 1);
+            }
+        }
+        .f-body {
+            p {
+                font-size: em($fz*1.3);
+                color: #444444;
+                letter-spacing: 1.8px;
+            }
+        }
+    }
+}
+
+.fancybox-bg {
+    background: #142030;
+}
