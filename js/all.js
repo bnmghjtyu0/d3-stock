@@ -4,9 +4,7 @@
 d3.csv("data/sales.csv", function (error, data) {
   var totalWidth = parseInt(d3.select("#Candlestick").style("width"), 10);
   var totalHeight = parseInt(d3.select("#Candlestick").style("height"), 10);
-
   var margin = { top: 10, left: 50, bottom: 30, right: 50 };
-
   var width = totalWidth - margin.left - margin.right;
   var height = totalHeight - margin.top - margin.bottom;
 
@@ -22,30 +20,25 @@ d3.csv("data/sales.csv", function (error, data) {
   // DATA STUFF
   var formatDecimal = d3.format(",.2f");
 
-  var parseDate = d3.timeParse("%Y%m%d"); // 20150630
-
-  var outputFormat = d3.timeFormat("%d %b %Y"); // 30 June 2015
-
   var dataLoaded = null;
-
-  var dataModelJSON = function (d) {
+  var dataModule = function (d) {
     return {
-      date: parseDate(+d.date),
-      time: data.time,
-      open: +d.open,
-      high: +d.high,
-      low: +d.low,
-      close: +d.close,
-      volume: +d.volume,
-      openInt: +d.openInt
+      time: d.time,
+      sales: parseInt(d.sales),
+      close: parseInt(d.close),
+      high: parseInt(d.high),
+      low: parseInt(d.low),
+      open: parseInt(d.open),
+      openInt: parseInt(d.openInt),
+      volume: parseInt(d.volume)
     }
   }
-
-  var data = data.map(dataModelJSON);
+  var data = data.map(dataModule);
   function setData(data) {
     dataLoaded = data;
   }
 
+  // 重繪 svg
   function redrawChart() {
     if (dataLoaded) {
       d3.select("#candle-chart").remove();
@@ -54,6 +47,7 @@ d3.csv("data/sales.csv", function (error, data) {
     }
   }
 
+  // 宣告 xScale=domain x軸標籤 x格線 domain:x軸線
   var xScale, xLabels, xAxis, yIsLinear, yDomain, yRange, yScale, yAxis;
 
   function prepareForBuild(data) {
@@ -61,34 +55,23 @@ d3.csv("data/sales.csv", function (error, data) {
       .scaleBand()
       .domain(
       data.map(function (d) {
-        return d.date;
-      })
-      )
+        return d.time
+      }))
       .range([0, width])
       .paddingInner(0.2)
       .paddingOuter(0)
       .align(0.5);
 
+    // console.log(xScale.domain())
+
+
     xLabels = xScale.domain().filter(function (d, i) {
-      if (i === data.length - 1) return d;
-      var next;
-
-      if (data[i + 1]) {
-        next = data[i + 1].date;
-      } else {
-        return false;
-      }
-
-      var monthA = d.getMonth();
-      var monthB = next.getMonth();
-
-      return monthB > monthA ? d : monthB === 0 && monthA === 11 ? d : false;
+      return d
     });
-
     xAxis = d3
       .axisBottom(xScale)
-      .tickFormat(outputFormat)
-      .tickValues(xLabels);
+      // .tickFormat(formatDecimal)
+      .tickValues(['08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00']);
 
     yIsLinear = true;
     yDomain = [d3.min(data, d => d.low), d3.max(data, d => d.high)];
@@ -102,7 +85,7 @@ d3.csv("data/sales.csv", function (error, data) {
       .axisLeft(yScale)
       .ticks(20)
       .tickSizeInner(-width)
-      .tickFormat(formatDecimal);
+    // .tickFormat(formatDecimal);
   }
 
   function buildChart(data) {
@@ -124,7 +107,6 @@ d3.csv("data/sales.csv", function (error, data) {
       .attr("class", "axis")
       .attr("transform", "translate( " + 0 + "," + height + ")")
       .call(customXAxis);
-
     function customXAxis(g) {
       g.call(xAxis);
       g.select(".domain").attrs({});
@@ -176,17 +158,21 @@ d3.csv("data/sales.csv", function (error, data) {
       xlabelWidth: getTextWidth("30 September 2000", "10px sans-serif"),
       labelHeight: 14,
       labelColor: "#2f4a6b",
-      labelStrokeColor: "none",
+      labelStrokeColor: "#fff",
       labelStrokeWidth: "0.5px"
     };
 
     crosshair.append("line").attrs({
       id: "focusLineX",
-      class: "focusLine"
+      class: "focusLine",
+      'stroke': '#fff',
+      'stroke-width': '1px'
     });
     crosshair.append("line").attrs({
       id: "focusLineY",
-      class: "focusLine"
+      class: "focusLine",
+      stroke: '#fff',
+      'stroke-width': '1px'
     });
 
     crosshair
@@ -236,23 +222,22 @@ d3.csv("data/sales.csv", function (error, data) {
       hover: "#c35500",
       lineMode: false
     };
-
     canvasGroup
       .selectAll("line")
       .data(data)
       .enter()
       .append("line")
       .attr("x1", function (d, i) {
-        return xScale(d.date) + xScale.bandwidth() * 0.5;
+        return xScale(d.time) + xScale.bandwidth() * 0.5;
       })
       .attr("y1", function (d) {
-        return yScale(d["high"]);
+        return yScale(d.high);
       })
       .attr("x2", function (d, i) {
-        return xScale(d.date) + xScale.bandwidth() * 0.5;
+        return xScale(d.time) + xScale.bandwidth() * 0.5;
       })
       .attr("y2", function (d) {
-        return yScale(d["low"]);
+        return yScale(d.low);
       })
       .style("stroke", candleSettings.strokeUp)
       .style("stroke-width", "1px")
@@ -267,7 +252,7 @@ d3.csv("data/sales.csv", function (error, data) {
         .append("rect")
         .attrs({
           x: function (d, i) {
-            return xScale(d.date);
+            return xScale(d.time);
           },
           y: function (d, i) {
             return d.close < d.open ? yScale(d.high) : yScale(d.low);
@@ -304,7 +289,7 @@ d3.csv("data/sales.csv", function (error, data) {
             stroke: candleSettings.hover
           });
         crosshair.style("display", null);
-        setCrosshair(xScale(d.date) + xScale.bandwidth() * 0.5, yScale(d.close));
+        setCrosshair(xScale(d.time) + xScale.bandwidth() * 0.5, yScale(d.close));
       })
       .on("mouseout", function (d, i) {
         d3
@@ -368,7 +353,7 @@ d3.csv("data/sales.csv", function (error, data) {
         .select("#focusLineXLabel")
         .attr("x", x)
         .attr("y", height + 12)
-        .text(outputFormat(xScale.domain()[Math.floor(x / xScale.step())]));
+        .text(xScale.domain()[Math.floor(x / xScale.step())]);
 
       d3
         .select("#focusLineXLabelBackground")
@@ -380,8 +365,7 @@ d3.csv("data/sales.csv", function (error, data) {
         (height + 6) +
         " )"
         )
-        .text(outputFormat(xScale.domain()[Math.floor(x / xScale.step())]));
-
+        .text(formatDecimal(xScale.domain()[Math.floor(x / xScale.step())]));
       d3
         .select("#focusLineYLabel")
         .attr("transform", "translate( " + -9 + ", " + y + ")")
