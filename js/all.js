@@ -93,7 +93,7 @@ d3.csv("data/sales.csv", function (error, data) {
       .select("#Candlestick")
       .append("svg")
       .attr("id", "candle-chart")
-      .attr("width", totalWidth)
+      .attr("width", totalWidth+60)
       .attr("height", totalHeight);
 
     var mainGroup = svg
@@ -166,7 +166,7 @@ d3.csv("data/sales.csv", function (error, data) {
       function textLine(g) {
         g.attr('class', 'tickA')
           .append('path')
-          .attr("d", "M0 " + height / 2 + ' ' + (width - 100) + ' ' + height / 2 + ' ' + (width - 80) + ' ' + (height / 2 - 16) + ' ' + (width + 0) + ' ' + (height / 2 - 16) + ' ' + (width + 0) + ' ' + (height / 2 + 16) + ' ' + (width - 80) + ' ' + (height / 2 + 16) + ' ' + (width - 100) + ' ' + height / 2)
+          .attr("d", "M0 " + height / 2 + ' ' + (width - 10) + ' ' + height / 2 + ' ' + (width + 10) + ' ' + (height / 2 - 14) + ' ' + (width + 80) + ' ' + (height / 2 - 14) + ' ' + (width + 80) + ' ' + (height / 2 + 14) + ' ' + (width + 10) + ' ' + (height / 2 + 14) + ' ' + (width - 10) + ' ' + height / 2)
           .attr('stroke', gradColor01)
           .attr('fill', 'url(#' + id + ')')
 
@@ -175,13 +175,13 @@ d3.csv("data/sales.csv", function (error, data) {
         .append('text')
         .text(function (d) { return data })
         .attrs({
-          'x': (width - 70),
-          'y': height / 2 + 8,
-          'font-size': 22 + 'px',
+          'x': (width - 0),
+          'y': height / 2 + 6,
+          'font-size': 16 + 'px',
           'fill': '#fff'
         })
         .styles({
-          'text-shadow': '2px 2px rgba(0,0,0,.2)',
+          'text-shadow': '1px 1px rgba(0,0,0,.18)',
           'font-weight': 'bold'
         })
     }
