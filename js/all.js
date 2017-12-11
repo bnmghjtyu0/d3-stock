@@ -101,6 +101,8 @@ d3.csv("data/sales.csv", function (error, data) {
       .attr("id", "mainGroup")
       .attr("transform", "translate( " + margin.left + ", " + margin.top + ")");
 
+
+
     var xAxisGroup = mainGroup
       .append("g")
       .attr("id", "xAxis")
@@ -130,9 +132,70 @@ d3.csv("data/sales.csv", function (error, data) {
         .attr("x2", width)
         .attr("stroke", "#2f4a6b");
       g.selectAll(".tick:first-of-type line").remove();
-
       g.selectAll(".tick text").attr("x", -9);
     }
+
+    // 方法-浮動框線
+    function setting(id, data, gradColor01, gradColor02, pos) {
+      //   漸層遮罩
+      var svgDefs = svg.append('defs');
+      var mainGradient = svgDefs
+        .append('linearGradient')
+        .attrs({
+          'id': 'mainGradient',
+          'x1': '0',
+          'y1': '0',
+          'x2': '0',
+          'y2': '1',
+        })
+        .attr('id', id)
+
+      mainGradient.append('stop')
+        .attr('offset', '0%')
+        .attr('stop-color', gradColor01)
+      mainGradient.append('stop')
+        .attr('offset', '100%')
+        .attr('stop-color', gradColor02)
+      //   線條svg
+      var Guideline = mainGroup
+        .append('g')
+        .call(textLine)
+        .styles({
+          'transform': 'translate(0,' + pos + ')'
+        })
+      function textLine(g) {
+        g.attr('class', 'tickA')
+          .append('path')
+          .attr("d", "M0 " + height / 2 + " 980 " + height / 2 + " 1000 " + (height / 2 - 20) + " 1100 " + (height / 2 - 20) + " 1100 " + (height / 2 + 20) + " 1000 " + (height / 2 + 20) + " 980 " + height / 2)
+          .attr('stroke', gradColor01)
+          .attr('fill', 'url(#'+id+')')
+
+      }
+      Guideline
+        .append('text')
+        .text(function (d) { return data })
+        .attrs({
+          'x': 1016,
+          'y': height / 2 + 8,
+          'font-size': 22 + 'px',
+          'fill': '#fff'
+        })
+        .styles({
+          'text-shadow': '2px 2px rgba(0,0,0,.2)',
+          'font-weight': 'bold'
+        })
+    }
+
+    setting('grad01', '17800', '#00a0f7', '#00cbfb', '-20%');
+    setting('grad02', '16888', '#00a0f7', '#00cbfb', '-10%');
+    setting('grad03', '15444', '#c4ae2d', '#fefe02', '0%');
+    setting('grad04', '14322', '#cd0000', '#ff0505', '10%');
+    setting('grad05', '13252', '#cd0000', '#ff0505', '20%');
+
+
+
+    // 浮動線條end
+
     var eventGroup = mainGroup.append("g").attr("id", "event-overlay");
 
     var crosshair = eventGroup.append("g").attr("id", "crosshair");
