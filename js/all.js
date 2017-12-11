@@ -166,16 +166,16 @@ d3.csv("data/sales.csv", function (error, data) {
       function textLine(g) {
         g.attr('class', 'tickA')
           .append('path')
-          .attr("d", "M0 " + height / 2 + " 980 " + height / 2 + " 1000 " + (height / 2 - 20) + " 1100 " + (height / 2 - 20) + " 1100 " + (height / 2 + 20) + " 1000 " + (height / 2 + 20) + " 980 " + height / 2)
+          .attr("d", "M0 " + height / 2 + ' ' + (width - 100) + ' ' + height / 2 + ' ' + (width - 80) + ' ' + (height / 2 - 16) + ' ' + (width + 0) + ' ' + (height / 2 - 16) + ' ' + (width + 0) + ' ' + (height / 2 + 16) + ' ' + (width - 80) + ' ' + (height / 2 + 16) + ' ' + (width - 100) + ' ' + height / 2)
           .attr('stroke', gradColor01)
-          .attr('fill', 'url(#'+id+')')
+          .attr('fill', 'url(#' + id + ')')
 
       }
       Guideline
         .append('text')
         .text(function (d) { return data })
         .attrs({
-          'x': 1016,
+          'x': (width - 70),
           'y': height / 2 + 8,
           'font-size': 22 + 'px',
           'fill': '#fff'
@@ -305,7 +305,6 @@ d3.csv("data/sales.csv", function (error, data) {
       .style("stroke", candleSettings.strokeUp)
       .style("stroke-width", "1px")
       .style("opacity", 1);
-
     if (xScale.bandwidth() > 1) {
       candleSettings.lineMode = false;
       canvasGroup
@@ -370,8 +369,10 @@ d3.csv("data/sales.csv", function (error, data) {
       .duration(1500)
       .ease(d3.easeBackInOut)
       .attr("y", function (d) {
+        // error01
         return yScale(Math.max(d.close, d.open));
       });
+
 
     eventRect
       .attrs({
