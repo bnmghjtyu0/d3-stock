@@ -2,14 +2,14 @@
 // 折線圖
 // ---------------------------------------------------------------------
 d3.csv("data/sales.csv", function (error, data) {
-  var totalWidth = parseInt(d3.select("#Candlestick").style("width"), 10);
-  var totalHeight = parseInt(d3.select("#Candlestick").style("height"), 10);
   var margin = { top: 10, left: 50, bottom: 30, right: 50 };
+  var totalWidth = parseInt(d3.select("#Candlestick").style("width"), 10) - margin.left;
+  var totalHeight = parseInt(d3.select("#Candlestick").style("height"), 10);
   var width = totalWidth - margin.left - margin.right;
   var height = totalHeight - margin.top - margin.bottom;
 
   window.addEventListener("resize", function (e) {
-    totalWidth = parseInt(d3.select("#Candlestick").style("width"), 10);
+    totalWidth = parseInt(d3.select("#Candlestick").style("width"), 10) - margin.left;
     totalHeight = parseInt(d3.select("#Candlestick").style("height"), 10);
 
     width = totalWidth - margin.left - margin.right;
@@ -64,7 +64,6 @@ d3.csv("data/sales.csv", function (error, data) {
 
     // console.log(xScale.domain())
 
-
     xLabels = xScale.domain().filter(function (d, i) {
       return d
     });
@@ -75,6 +74,7 @@ d3.csv("data/sales.csv", function (error, data) {
 
     yIsLinear = true;
     yDomain = [d3.min(data, d => d.low), d3.max(data, d => d.high)];
+
     yRange = [height, 0];
     yScale = d3
       .scaleLinear()
@@ -93,15 +93,13 @@ d3.csv("data/sales.csv", function (error, data) {
       .select("#Candlestick")
       .append("svg")
       .attr("id", "candle-chart")
-      .attr("width", totalWidth+60)
+      .attr("width", totalWidth + 60)
       .attr("height", totalHeight);
 
     var mainGroup = svg
       .append("g")
       .attr("id", "mainGroup")
       .attr("transform", "translate( " + margin.left + ", " + margin.top + ")");
-
-
 
     var xAxisGroup = mainGroup
       .append("g")
@@ -133,6 +131,7 @@ d3.csv("data/sales.csv", function (error, data) {
         .attr("stroke", "#2f4a6b");
       g.selectAll(".tick:first-of-type line").remove();
       g.selectAll(".tick text").attr("x", -9);
+
     }
 
     // 方法-浮動框線
@@ -166,7 +165,7 @@ d3.csv("data/sales.csv", function (error, data) {
       function textLine(g) {
         g.attr('class', 'tickA')
           .append('path')
-          .attr("d", "M0 " + height / 2 + ' ' + (width - 10) + ' ' + height / 2 + ' ' + (width + 10) + ' ' + (height / 2 - 14) + ' ' + (width + 80) + ' ' + (height / 2 - 14) + ' ' + (width + 80) + ' ' + (height / 2 + 14) + ' ' + (width + 10) + ' ' + (height / 2 + 14) + ' ' + (width - 10) + ' ' + height / 2)
+          .attr("d", "M0 " + height / 2 + ' ' + (width + 0) + ' ' + height / 2 + ' ' + (width + 20) + ' ' + (height / 2 - 14) + ' ' + (width + 90) + ' ' + (height / 2 - 14) + ' ' + (width + 90) + ' ' + (height / 2 + 14) + ' ' + (width + 20) + ' ' + (height / 2 + 14) + ' ' + (width + 0) + ' ' + height / 2)
           .attr('stroke', gradColor01)
           .attr('fill', 'url(#' + id + ')')
 
@@ -175,7 +174,7 @@ d3.csv("data/sales.csv", function (error, data) {
         .append('text')
         .text(function (d) { return data })
         .attrs({
-          'x': (width - 0),
+          'x': (width + 26),
           'y': height / 2 + 6,
           'font-size': 16 + 'px',
           'fill': '#fff'
@@ -191,8 +190,6 @@ d3.csv("data/sales.csv", function (error, data) {
     setting('grad03', '15444', '#c4ae2d', '#fefe02', '0%');
     setting('grad04', '14322', '#cd0000', '#ff0505', '10%');
     setting('grad05', '13252', '#cd0000', '#ff0505', '20%');
-
-
 
     // 浮動線條end
 
@@ -369,10 +366,8 @@ d3.csv("data/sales.csv", function (error, data) {
       .duration(1500)
       .ease(d3.easeBackInOut)
       .attr("y", function (d) {
-        // error01
         return yScale(Math.max(d.close, d.open));
       });
-
 
     eventRect
       .attrs({
@@ -453,7 +448,6 @@ d3.csv("data/sales.csv", function (error, data) {
     buildChart(data);
   })(data);
 
-
 });
 // ---------------------------------------------------------------------
 // 長條圖
@@ -520,6 +514,7 @@ function renderingLongBar() {
       });
     // add the x Axis
     svgBar.append("g")
+      .attr('id', 'xAxis')
       .attr("transform", "translate(0," + height + ")")
       .call(d3.axisBottom(x)
         .tickValues(['08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00']))
@@ -807,3 +802,19 @@ function tableResponsive(el) {
   }
 }
 
+
+
+
+// navbar
+// 監聽
+var navbar = document.querySelector('#navbar');
+var aside = document.querySelector('.aside');
+var main = document.querySelector('main');
+
+function navbarFunc(e) {
+  e.preventDefault();
+  aside.classList.toggle('active');
+  main.classList.toggle('active');
+}
+
+navbar.addEventListener('click', navbarFunc, false);

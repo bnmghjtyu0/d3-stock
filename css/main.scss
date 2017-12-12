@@ -17,6 +17,10 @@ aside {
     height: calc(100% - #{$headHeight});
     left: 0;
     top: $headHeight;
+    &.active {
+        width: 0;
+        overflow: hidden;
+    }
     ul {
         padding: 0;
         li {
@@ -174,6 +178,9 @@ aside {
 main {
     padding-top: $headHeight;
     margin-left: $asideWidth; // height: calc(100% - #{$headHeight} - #{$mainTopHeight});
+    &.active {
+        margin-left: 0;
+    }
     .m-top {
         display: flex;
         align-items: center;
@@ -362,6 +369,14 @@ main {
     .domain {
         stroke: #48678b;
     }
+    #xAxis {
+        .tick {
+            text {
+                fill: #fff;
+                stroke: none;
+            }
+        }
+    }
     .tick {
         line {
             stroke: #48678b;
@@ -389,6 +404,14 @@ main {
         text {
             fill: #abd2ff;
             stroke: none;
+        }
+    }
+    #xAxis {
+        .tick {
+            text {
+                fill: #fff;
+                stroke: none;
+            }
         }
     }
 }
