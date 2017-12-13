@@ -8,9 +8,16 @@ $colors:#45baf7,
 $basicColor:#0099ff;
 $stockValue2Width:490px;
 $asideWidth:152px;
+$asideWidth-xs:80px;
 $headHeight:70px;
 $mainTopHeight:110px;
 $fz:15px;
+.flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .mt-10 {
     margin-top: 10px;
 }
@@ -119,3 +126,8 @@ $fz:15px;
         color: #fff;
     }
 }
+
+$col-xs: "(max-width: 767px)";
+$col-sm: "(max-width: 991px)";
+$col-md: "(min-width: 992px) and (max-width: 1199px)";
+$col-lg: "(min-width: 1200px)";

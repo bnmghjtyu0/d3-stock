@@ -47,9 +47,15 @@ $labelColors:#496169,
                 td {
                     display: flex;
                     &:before {
-                        display: block;
                         flex-basis: 80px;
                         font-weight: bold;
+                    }
+                    .flex-control {
+                        flex: 1;
+                    }
+                    &:before {
+                        content: '';
+                        flex: 80px 0 0;
                     }
                 }
             }
@@ -119,6 +125,15 @@ $labelColors:#496169,
                 font-size: em($fz*1.33);
                 &:before {
                     display: none;
+                }
+                @media #{$col-xs} {
+                    padding: 8px 8px;
+                    &:before {
+                        display: block;
+                        font-weight: bold;
+                        text-align: right;
+                        margin-right: 12px;
+                    }
                 }
                 a {
                     color: #0099ff;

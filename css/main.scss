@@ -8,6 +8,9 @@ body {
 body {
     font-size: 1.2em;
     font-family: '微軟正黑體', Arial, Helvetica, sans-serif;
+    @media #{$col-sm} {
+        font-size: 1em;
+    }
 }
 
 aside {
@@ -17,6 +20,14 @@ aside {
     height: calc(100% - #{$headHeight});
     left: 0;
     top: $headHeight;
+    transition: all 200ms;
+    @media #{$col-sm} {
+        position: fixed;
+        z-index: 1020;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, .2);
+        width: $asideWidth-xs;
+        overflow: hidden;
+    }
     &.active {
         width: 0;
         overflow: hidden;
@@ -26,6 +37,9 @@ aside {
         li {
             list-style: none;
             height: 100px;
+            @media #{$col-sm} {
+                height: $asideWidth-xs;
+            }
             a {
                 width: 100%;
                 height: 100%;
@@ -54,6 +68,9 @@ aside {
                     }
                     i {
                         display: inline-block;
+                        @media #{$col-sm} {
+                            transform: scale(.8);
+                        }
                         &.icon {
                             &.icon-chart {
                                 width: 40px;
@@ -126,11 +143,18 @@ aside {
     margin: 0;
     padding-left: $asideWidth;
     z-index: 1020;
+    @media #{$col-sm} {
+        padding-left: 0;
+        border: none;
+    }
     .navbar-collapse {
         width: 100%;
         display: flex !important;
         align-items: center;
         border-bottom: 1px solid #324B69;
+        @media #{$col-sm} {
+            border-top: none;
+        }
         .h-left {
             display: flex;
             align-items: center;
@@ -149,6 +173,9 @@ aside {
                 margin: 0;
                 font-size: em($fz + 12px);
                 font-weight: bold;
+                @media #{$col-sm} {
+                    margin-left: 20px;
+                }
             }
         }
         .h-right {
@@ -156,6 +183,18 @@ aside {
             padding: 0 20px;
             display: flex;
             align-items: center;
+            @media #{$col-sm} {
+                padding: 0 6px;
+            }
+            a {
+                @media #{$col-sm} {
+                    margin-right: 12px !important;
+                    &.btn-gradient-main {
+                        padding: 5px 8px;
+                        width: initial;
+                    }
+                }
+            }
         }
     }
     .h-aside {
@@ -167,6 +206,11 @@ aside {
         background: linear-gradient(0deg, #051127, #0b1931);
         position: absolute;
         left: 0;
+        @media #{$col-sm} {
+            position: relative;
+            width: $asideWidth-xs;
+            display: none;
+        }
         .logo {
             background: url(../img/logo.png);
             width: 29px;
@@ -181,14 +225,25 @@ main {
     &.active {
         margin-left: 0;
     }
+    @media #{$col-sm} {
+        margin-left: 0;
+    }
     .m-top {
         display: flex;
         align-items: center;
         background: linear-gradient(0deg, #152439, #18273e);
         height: $mainTopHeight;
+        @media #{$col-sm} {
+            display: block;
+            height: initial;
+            padding: 12px 0;
+        }
         .mr-auto {
             margin-left: 30px;
             margin-right: auto;
+            @media #{$col-sm} {
+                margin-left: 15px;
+            }
             .title {
                 margin: 0;
                 color: #fff;
@@ -203,8 +258,15 @@ main {
         .ml-auto {
             margin-left: auto;
             margin-right: 60px;
+            @media #{$col-sm} {
+                margin-right: 0;
+                margin-top: 12px;
+            }
             .stockValue {
                 display: flex;
+                @media #{$col-sm} {
+                    padding: 0 15px;
+                }
                 .item+.item {
                     &:before {
                         content: '';
@@ -218,6 +280,11 @@ main {
                 .item {
                     position: relative;
                     padding: 20px 60px;
+                    @media #{$col-sm} {
+                        padding: 0;
+                        width: calc(100% / 3);
+                        text-align: center;
+                    }
                     .subText {
                         font-size: em($fz + 6px);
                         color: #74a1d3;
@@ -225,6 +292,16 @@ main {
                     .num {
                         font-size: em($fz + 25px);
                         color: #fff;
+                        @media #{$col-sm} {
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
+                        }
+                        i {
+                            @media #{$col-sm} {
+                                display: block;
+                            }
+                        }
                     }
                 }
             }
@@ -233,6 +310,9 @@ main {
     .m-main {
         display: flex;
         align-items: stretch;
+        @media #{$col-sm} {
+            display: block;
+        }
         &:after {
             content: '';
             clear: both;
@@ -241,6 +321,10 @@ main {
         .chart {
             float: left;
             width: calc(100% - #{$stockValue2Width});
+            @media #{$col-sm} {
+                width: 100%;
+                float: initial;
+            }
         }
         .stockValue2 {
             float: left;
@@ -249,6 +333,11 @@ main {
             padding: 0 2%;
             overflow-x: hidden;
             overflow-y: visible;
+            @media #{$col-sm} {
+                width: 100%;
+                float: initial;
+                padding: 0 20px;
+            }
             .panel-group {
                 margin-top: 40px;
                 .panel-heading {
@@ -331,6 +420,9 @@ main {
             font-weight: bold;
         }
     }
+    .l-main-body {
+        padding-bottom: 18%;
+    }
     .l-main-foot {
         position: fixed;
         bottom: 0;
@@ -340,9 +432,20 @@ main {
         width: calc(100% - #{$asideWidth});
         height: 117px;
         padding: 0 2%;
+        @media #{$col-sm} {
+            width: 100%;
+            height: initial;
+        }
         .d-flex {
             margin-top: 20px;
+            @media #{$col-sm} {
+                display: block;
+                text-align: right;
+            }
             .ml-auto {
+                @media #{$col-sm} {
+                    padding: 12px 0;
+                }
                 ul {
                     margin: 0;
                     li {
