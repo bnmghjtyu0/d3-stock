@@ -1,5 +1,5 @@
-@import 'module/variables';
-@import 'module/component';
+@import "module/variables";
+@import "module/component";
 html,
 body {
     height: 100%;
@@ -7,7 +7,10 @@ body {
 
 body {
     font-size: 1.2em;
-    font-family: '微軟正黑體', Arial, Helvetica, sans-serif;
+    font-family: "微軟正黑體", Arial, Helvetica, sans-serif;
+    @media #{$laptops} {
+        font-size: 1em;
+    }
     @media #{$col-sm} {
         font-size: 1em;
     }
@@ -21,10 +24,13 @@ aside {
     left: 0;
     top: $headHeight;
     transition: all 200ms;
+    @media #{$laptops} {
+        width: $asideWidth-laptops;
+    }
     @media #{$col-sm} {
         position: fixed;
         z-index: 1020;
-        box-shadow: 0 2px 12px rgba(0, 0, 0, .2);
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
         width: $asideWidth-xs;
         overflow: hidden;
     }
@@ -69,7 +75,7 @@ aside {
                     i {
                         display: inline-block;
                         @media #{$col-sm} {
-                            transform: scale(.8);
+                            transform: scale(0.8);
                         }
                         &.icon {
                             &.icon-chart {
@@ -101,12 +107,12 @@ aside {
                     position: relative;
                     background: linear-gradient(0deg, #061639, #122951);
                     &:before {
-                        content: '';
+                        content: "";
                         position: absolute;
                         left: 0;
                         width: 4px;
                         height: 100%;
-                        background: linear-gradient(0deg, #00a0f7 0%, #00b4f9 43%, #20c1ff 61%, #00cbfb 100%);
+                        background: linear-gradient( 0deg, #00a0f7 0%, #00b4f9 43%, #20c1ff 61%, #00cbfb 100%);
                     }
                     .pic {
                         i {
@@ -124,7 +130,7 @@ aside {
                         }
                     }
                     p {
-                        color: nth($colors, 1)
+                        color: nth($colors, 1);
                     }
                 }
             }
@@ -143,6 +149,9 @@ aside {
     margin: 0;
     padding-left: $asideWidth;
     z-index: 1020;
+    @media #{$laptops} {
+        padding-left: $asideWidth-laptops;
+    }
     @media #{$col-sm} {
         padding-left: 0;
         border: none;
@@ -151,7 +160,7 @@ aside {
         width: 100%;
         display: flex !important;
         align-items: center;
-        border-bottom: 1px solid #324B69;
+        border-bottom: 1px solid #324b69;
         @media #{$col-sm} {
             border-top: none;
         }
@@ -183,13 +192,41 @@ aside {
             padding: 0 20px;
             display: flex;
             align-items: center;
+            justify-content: center;
             @media #{$col-sm} {
                 padding: 0 6px;
             }
             a {
+                @media #{$laptops} {
+                    font-size: 15px;
+                    padding: 5px 15px;
+                    width: initial;
+                    display: flex !important;
+                    padding: 0;
+                    margin-right: 20px;
+                    i {
+                        transform-origin: center center;
+                        transform: scale(.8);
+                        margin: 0;
+                    }
+                }
                 @media #{$col-sm} {
                     margin-right: 12px !important;
-                    &.btn-gradient-main {
+                }
+                &.btn-gradient-main {
+                    @media #{$laptops} {
+                        font-size: 15px;
+                        padding: 5px 15px;
+                        width: initial;
+                        display: flex !important;
+                        margin-right: 0;
+                        i {
+                            transform-origin: center center;
+                            transform: scale(.8);
+                            margin: 2px;
+                        }
+                    }
+                    @media #{$col-sm} {
                         padding: 5px 8px;
                         width: initial;
                     }
@@ -206,6 +243,9 @@ aside {
         background: linear-gradient(0deg, #051127, #0b1931);
         position: absolute;
         left: 0;
+        @media #{$laptops} {
+            width: $asideWidth-laptops;
+        }
         @media #{$col-sm} {
             position: relative;
             width: $asideWidth-xs;
@@ -224,6 +264,9 @@ main {
     margin-left: $asideWidth; // height: calc(100% - #{$headHeight} - #{$mainTopHeight});
     &.active {
         margin-left: 0;
+    }
+    @media #{$laptops} {
+        margin-left: $asideWidth-laptops;
     }
     @media #{$col-sm} {
         margin-left: 0;
@@ -269,7 +312,7 @@ main {
                 }
                 .item+.item {
                     &:before {
-                        content: '';
+                        content: "";
                         position: absolute;
                         left: 0;
                         width: 1px;
@@ -314,13 +357,16 @@ main {
             display: block;
         }
         &:after {
-            content: '';
+            content: "";
             clear: both;
             display: block;
         }
         .chart {
             float: left;
             width: calc(100% - #{$stockValue2Width});
+            @media #{$laptops} {
+                width: calc(100% - #{$stockValue2Width-laptops});
+            }
             @media #{$col-sm} {
                 width: 100%;
                 float: initial;
@@ -333,6 +379,9 @@ main {
             padding: 0 2%;
             overflow-x: hidden;
             overflow-y: visible;
+            @media #{$laptops} {
+                width: $stockValue2Width-laptops;
+            }
             @media #{$col-sm} {
                 width: 100%;
                 float: initial;
@@ -353,7 +402,7 @@ main {
                             margin: 0;
                             margin-top: 6px;
                             color: nth($colors, 5);
-                            font-size: em($fz + 45px);
+                            font-size: em($fz + 42px);
                         }
                     }
                     .ml-auto {
@@ -381,13 +430,13 @@ main {
                     padding: 0;
                     .list {
                         padding-left: 0;
-                        border-top: 1px solid #1D3352;
+                        border-top: 1px solid #1d3352;
                         li {
                             padding: 20px 0;
                             display: flex;
                             align-items: center;
                             color: #fff;
-                            border-bottom: 1px solid #1D3352;
+                            border-bottom: 1px solid #1d3352;
                             .title {
                                 font-size: em($fz + 6px);
                             }
@@ -418,6 +467,7 @@ main {
     .l-main-header {
         .title {
             font-weight: bold;
+            font-size: em($fz+27);
         }
     }
     .l-main-body {
@@ -432,6 +482,9 @@ main {
         width: calc(100% - #{$asideWidth});
         height: 117px;
         padding: 0 2%;
+        @media #{$laptops} {
+            width: calc(100% - #{$asideWidth-laptops});
+        }
         @media #{$col-sm} {
             width: 100%;
             height: initial;
