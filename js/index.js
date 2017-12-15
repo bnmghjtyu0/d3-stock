@@ -181,7 +181,7 @@ d3.csv("data/sales.csv", function(error, data) {
       var Guideline = mainGroup
         .append("g")
         .call(textLine)
-        .attr('transform', 'translate(0,' + pos + ')')
+        .attr("transform", "translate(0," + pos + ")");
       function textLine(g) {
         g
           .attr("class", "tickA")
@@ -244,6 +244,9 @@ d3.csv("data/sales.csv", function(error, data) {
     var eventGroup = mainGroup.append("g").attr("id", "event-overlay");
 
     var crosshair = eventGroup.append("g").attr("id", "crosshair");
+
+    var crossLabel = eventGroup.append("path").attr("class", "aaaaaaaaa");
+    var crossLabelText = eventGroup.append('text')
 
     var eventRect = eventGroup.append("rect");
 
@@ -396,6 +399,32 @@ d3.csv("data/sales.csv", function(error, data) {
           .styles({
             stroke: candleSettings.hover
           });
+
+        crossLabel
+          .attr(
+            "d",
+            "M0 10" +
+              "C0 10,0 0,10 0" +
+              "L128 0" +
+              "C138 0,148 0,148 10" +
+              "L148 55" +
+              "C148 55,148 65,138 65" +
+              "L84 65" +
+              "L74 81" +
+              "L64 65" +
+              "L10 65" +
+              "C10 65,0 65,0 55" +
+              "Z"
+          )
+          .attr("fill", "#fff")
+
+          crossLabelText
+          .text('high'+':'+d.high+'time'+':'+d.time)
+          .attr('fill','red')
+          .attr('font-size','20px')
+          .attr('font-weight','bold')
+          .attr('x','12')
+          .attr('y','30')
         crosshair.style("display", null);
         setCrosshair(
           xScale(d.time) + xScale.bandwidth() * 0.5,
@@ -413,6 +442,7 @@ d3.csv("data/sales.csv", function(error, data) {
             stroke: candleSettings.stroke,
             "stroke-width": "1px"
           });
+        // .selectAll('g').remove()
       })
       .transition()
       .duration(1500)
@@ -420,7 +450,6 @@ d3.csv("data/sales.csv", function(error, data) {
       .attr("y", function(d) {
         return yScale(Math.max(d.close, d.open));
       });
-
     eventRect
       .attrs({
         width: width,
