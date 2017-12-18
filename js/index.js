@@ -26,6 +26,7 @@ d3.csv("data/sales.csv", function(error, data) {
   var dataLoaded = null;
   var dataModule = function(d) {
     return {
+      date: d.date,
       time: d.time,
       sales: parseInt(d.sales),
       close: parseInt(d.close),
@@ -233,7 +234,7 @@ d3.csv("data/sales.csv", function(error, data) {
           "font-weight": "bold"
         });
     }
-    setting("grad01", "17800", "#00a0f7", "#00cbfb", -100);
+    setting("grad01", "17666", "#00a0f7", "#00cbfb", -100);
     setting("grad02", "16888", "#00a0f7", "#00cbfb", -50);
     setting("grad03", "15444", "#c4ae2d", "#fefe02", 0);
     setting("grad04", "14322", "#cd0000", "#ff0505", 50);
@@ -245,12 +246,15 @@ d3.csv("data/sales.csv", function(error, data) {
 
     var crosshair = eventGroup.append("g").attr("id", "crosshair");
 
-    var crossLabel = eventGroup.append("path").attr("class", "aaaaaaaaa");
-    var crossLabelText = eventGroup.append('text')
-
     var eventRect = eventGroup.append("rect");
 
     var canvasGroup = eventGroup.append("g").attr("id", "circleGroup");
+
+    var crossLabel = eventGroup.append("path").attr("class", "aaaaaaaaa");
+    var crossLabelText = eventGroup.append("text");
+    var crossLabelTime = eventGroup.append("text");
+    var crossCircle02 = eventGroup.append('circle');
+    var crossCircle01 = eventGroup.append('circle');
 
     // http://stackoverflow.com/questions/118241/calculate-text-width-with-javascript
     function getTextWidth(text, font) {
@@ -351,7 +355,14 @@ d3.csv("data/sales.csv", function(error, data) {
       .attr("y2", function(d) {
         return yScale(d.low);
       })
-      .style("stroke", candleSettings.strokeUp)
+
+      .styles({
+        stroke: function(d) {
+          return d.close > d.open
+            ? candleSettings.strokeUp
+            : candleSettings.strokeDown;
+        }
+      })
       .style("stroke-width", "1px")
       .style("opacity", 1);
     if (xScale.bandwidth() > 1) {
@@ -364,7 +375,6 @@ d3.csv("data/sales.csv", function(error, data) {
         .attrs({
           x: function(d, i) {
             return xScale(d.time);
-       
           },
           y: function(d, i) {
             return d.close < d.open ? yScale(d.high) : yScale(d.low);
@@ -374,7 +384,7 @@ d3.csv("data/sales.csv", function(error, data) {
             var max = yScale(Math.min(d.close, d.open));
             var min = yScale(Math.max(d.close, d.open));
             var diff = max - min;
-            return diff || 0.1;
+            return diff || 1;
           }
         })
         .styles({
@@ -403,30 +413,132 @@ d3.csv("data/sales.csv", function(error, data) {
         crossLabel
           .attr(
             "d",
-            "M"+xScale(d.time)+" "+(yScale(d.high)+10)+" " +
-              "C"+xScale(d.time)+" "+(yScale(d.high)+10)+","+xScale(d.time)+" "+yScale(d.high)+","+(xScale(d.time)+10)+" "+yScale(d.high)+" "+
-              "L"+(xScale(d.time)+128)+" "+yScale(d.high)+","+
-              "C"+(xScale(d.time)+138)+" "+yScale(d.high)+","+(xScale(d.time)+148)+" "+yScale(d.high)+","+(xScale(d.time)+148)+" "+(yScale(d.high)+10) +" "+
-              "L"+(xScale(d.time)+148)+" "+(yScale(d.high)+55)+","+
-              "C"+(xScale(d.time)+148)+" "+(yScale(d.high)+55)+","+(xScale(d.time)+148)+" "+(yScale(d.high)+65)+","+(xScale(d.time)+138)+" "+(yScale(d.high)+65) +" "+
-              "L"+(xScale(d.time)+84)+" "+(yScale(d.high)+65)+","+
-              "L"+(xScale(d.time)+74)+" "+(yScale(d.high)+81)+","+
-              "L"+(xScale(d.time)+64)+" "+(yScale(d.high)+65)+","+
-              "L"+(xScale(d.time)+10)+" "+(yScale(d.high)+65)+","+
-              "C"+(xScale(d.time)+10)+" "+(yScale(d.high)+65)+","+(xScale(d.time)+0)+" "+(yScale(d.high)+65)+","+(xScale(d.time)+0)+" "+(yScale(d.high)+55) +" "+
+            "M" +
+              xScale(d.time) +
+              " " +
+              (yScale(d.high) + 10) +
+              " " +
+              "C" +
+              xScale(d.time) +
+              " " +
+              (yScale(d.high) + 10) +
+              "," +
+              xScale(d.time) +
+              " " +
+              yScale(d.high) +
+              "," +
+              (xScale(d.time) + 10) +
+              " " +
+              yScale(d.high) +
+              " " +
+              "L" +
+              (xScale(d.time) + 128) +
+              " " +
+              yScale(d.high) +
+              "," +
+              "C" +
+              (xScale(d.time) + 138) +
+              " " +
+              yScale(d.high) +
+              "," +
+              (xScale(d.time) + 148) +
+              " " +
+              yScale(d.high) +
+              "," +
+              (xScale(d.time) + 148) +
+              " " +
+              (yScale(d.high) + 10) +
+              " " +
+              "L" +
+              (xScale(d.time) + 148) +
+              " " +
+              (yScale(d.high) + 55) +
+              "," +
+              "C" +
+              (xScale(d.time) + 148) +
+              " " +
+              (yScale(d.high) + 55) +
+              "," +
+              (xScale(d.time) + 148) +
+              " " +
+              (yScale(d.high) + 65) +
+              "," +
+              (xScale(d.time) + 138) +
+              " " +
+              (yScale(d.high) + 65) +
+              " " +
+              "L" +
+              (xScale(d.time) + 84) +
+              " " +
+              (yScale(d.high) + 65) +
+              "," +
+              "L" +
+              (xScale(d.time) + 74) +
+              " " +
+              (yScale(d.high) + 81) +
+              "," +
+              "L" +
+              (xScale(d.time) + 64) +
+              " " +
+              (yScale(d.high) + 65) +
+              "," +
+              "L" +
+              (xScale(d.time) + 10) +
+              " " +
+              (yScale(d.high) + 65) +
+              "," +
+              "C" +
+              (xScale(d.time) + 10) +
+              " " +
+              (yScale(d.high) + 65) +
+              "," +
+              (xScale(d.time) + 0) +
+              " " +
+              (yScale(d.high) + 65) +
+              "," +
+              (xScale(d.time) + 0) +
+              " " +
+              (yScale(d.high) + 55) +
+              " " +
               "Z"
           )
           .attr("fill", "#fff")
-          .attr('transform','translate(-70,-90)')
+          .attr("transform", "translate(-70,-90)");
 
-          crossLabelText
+        crossLabelText
           .text(d.high)
-          .attr('fill','red')
-          .attr('font-size','20px')
-          .attr('font-weight','bold')
-          .attr('x',xScale(d.time))
-          .attr('y',yScale(d.high))
-          .attr('transform','translate(-50,-60)')
+          .attr("fill", "red")
+          .attr("font-size", "24px")
+          .attr("font-weight", "bold")
+          .attr("x", xScale(d.time))
+          .attr("y", yScale(d.high))
+          .attr("transform", "translate(-60,-60)");
+
+        crossLabelTime
+          .text(d.date+" "+d.time)
+          .attr("fill", "#223953")
+          .attr("font-size", "15px")
+          .attr("font-weight", "bold")
+          .attr("x", xScale(d.time))
+          .attr("y", yScale(d.high))
+          .attr("transform", "translate(-60,-40)");
+
+          crossCircle01
+          .attr("r","8")
+          .attr("cx",xScale(d.time))
+          .attr("cy",yScale(d.high))
+          .attr("fill","rgb(69, 202, 252)")
+          .attr("stroke","#fff")
+          .attr("stroke-width","4")
+          .attr("transform","translate(4,10)")
+
+          crossCircle02
+          .attr("r","16")
+          .attr("cx",xScale(d.time))
+          .attr("cy",yScale(d.high))
+          .attr("fill","rgba(255,255,255,.6)")
+          .attr("transform","translate(4,10)")
+
         crosshair.style("display", null);
         setCrosshair(
           xScale(d.time) + xScale.bandwidth() * 0.5,
