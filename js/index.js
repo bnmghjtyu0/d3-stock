@@ -253,8 +253,8 @@ d3.csv("data/sales.csv", function(error, data) {
     var crossLabel = eventGroup.append("path").attr("class", "aaaaaaaaa");
     var crossLabelText = eventGroup.append("text");
     var crossLabelTime = eventGroup.append("text");
-    var crossCircle02 = eventGroup.append('circle');
-    var crossCircle01 = eventGroup.append('circle');
+    var crossCircle02 = eventGroup.append("circle");
+    var crossCircle01 = eventGroup.append("circle");
 
     // http://stackoverflow.com/questions/118241/calculate-text-width-with-javascript
     function getTextWidth(text, font) {
@@ -410,6 +410,7 @@ d3.csv("data/sales.csv", function(error, data) {
           .styles({
             stroke: candleSettings.hover
           });
+
         crossLabel
           .attr(
             "d",
@@ -515,7 +516,7 @@ d3.csv("data/sales.csv", function(error, data) {
           .attr("transform", "translate(-60,-60)");
 
         crossLabelTime
-          .text(d.date+" "+d.time)
+          .text(d.date + " " + d.time)
           .attr("fill", "#223953")
           .attr("font-size", "15px")
           .attr("font-weight", "bold")
@@ -523,21 +524,21 @@ d3.csv("data/sales.csv", function(error, data) {
           .attr("y", yScale(d.high))
           .attr("transform", "translate(-60,-40)");
 
-          crossCircle01
-          .attr("r","8")
-          .attr("cx",xScale(d.time))
-          .attr("cy",yScale(d.high))
-          .attr("fill","rgb(69, 202, 252)")
-          .attr("stroke","#fff")
-          .attr("stroke-width","4")
-          .attr("transform","translate(4,10)")
+        crossCircle01
+          .attr("r", "8")
+          .attr("cx", xScale(d.time))
+          .attr("cy", yScale(d.high))
+          .attr("fill", "rgb(69, 202, 252)")
+          .attr("stroke", "#fff")
+          .attr("stroke-width", "4")
+          .attr("transform", "translate(4,10)");
 
-          crossCircle02
-          .attr("r","16")
-          .attr("cx",xScale(d.time))
-          .attr("cy",yScale(d.high))
-          .attr("fill","rgba(255,255,255,.6)")
-          .attr("transform","translate(4,10)")
+        crossCircle02
+          .attr("r", "16")
+          .attr("cx", xScale(d.time))
+          .attr("cy", yScale(d.high))
+          .attr("fill", "rgba(255,255,255,.6)")
+          .attr("transform", "translate(4,10)");
 
         crosshair.style("display", null);
         setCrosshair(
@@ -556,7 +557,6 @@ d3.csv("data/sales.csv", function(error, data) {
             stroke: candleSettings.stroke,
             "stroke-width": "1px"
           });
-        // .selectAll('g').remove()
       })
       .transition()
       .duration(1500)
@@ -875,8 +875,11 @@ var gauge = function(container, configuration) {
       .attr("id", "a1")
       .append("rect")
       .attr("x", -6)
-      .attr("y", -20)
-      .attr("width", parseInt(d3.select(".speedometerRow").style("width")) / 2)
+      .attr("y", -40)
+      .attr(
+        "width",
+        parseInt(d3.select(".speedometerRow").style("width")) / 2.1
+      )
       .attr(
         "height",
         parseInt(d3.select(".speedometerRow").style("width")) / 1
@@ -885,16 +888,16 @@ var gauge = function(container, configuration) {
     svg
       .append("circle")
       .attr("clip-path", "url(#a1)")
-      .attr("cx", parseInt(d3.select(".speedometerRow").style("width")) / 2)
-      .attr("cy", parseInt(d3.select(".speedometerRow").style("width")) / 2)
-      .attr("r", parseInt(d3.select(".speedometerRow").style("width")) / 2)
+      .attr("cx", parseInt(d3.select(".speedometerRow").style("width")) / 2.2)
+      .attr("cy", parseInt(d3.select(".speedometerRow").style("width")) / 2.2)
+      .attr("r", parseInt(d3.select(".speedometerRow").style("width")) / 2.2)
       .attr(
         "stroke-width",
-        parseInt(d3.select(".speedometerRow").style("width")) / 44
+        parseInt(d3.select(".speedometerRow").style("width")) / 45
       )
       .attr("stroke", config.borderColor)
       .attr("fill", "none")
-      .attr("transform", "translate(6,6)");
+      .attr("transform", "translate(12,10)");
 
     var centerTx = centerTranslation();
 
@@ -943,6 +946,47 @@ var gauge = function(container, configuration) {
       [config.pointerWidth / 2, 0]
     ];
     var pointerLine = d3.line().curve(d3.curveLinear);
+    var g1 = svg.append("g").attr("class", "g1");
+    var g1hr = g1.append("path");
+    var g1text = g1.append("text");
+    var g1text2 = g1.append("text");
+    var g1path = g1.append("path");
+
+    g1.attr("transform", "translate(20,220)");
+    g1path
+      .attr(
+        "d",
+        "M0 10" +
+          "C0 10,0 0,10 0" +
+          "L150 0," +
+          "C150 0,160 0, 160 10," +
+          "L160 120," +
+          "C160 120,160 130,150 130,L10 130," +
+          "C10 130,0 130,0 120," +
+          "Z"
+      )
+      .attr("stroke", "#4c709a")
+      .attr("fill", "none");
+    g1hr
+      .attr("d", "M0 52 160 52")
+      .attr("stroke", "#4c709a")
+      .attr("fill", "none");
+    g1text
+      .text("現貨能量 mlm ")
+      .attr("stroke", "none")
+      .attr("fill", "#4c709a")
+      .attr("font-size", "18px")
+      .attr("font-weight", "bold")
+      .attr("x", 20)
+      .attr("y", 30);
+    g1text2
+      .text("122")
+      .attr("stroke", "none")
+      .attr("fill", "#fff")
+      .attr("font-size", "36px")
+      .attr("font-weight", "bold")
+      .attr("x", 50)
+      .attr("y", 100);
 
     var pg = svg
       .append("g")
@@ -991,7 +1035,7 @@ function onDocumentReady() {
   var powerGauge = gauge("#speedometer", {
     size: 220,
     clipWidth: parseInt(d3.select(".speedometerRow").style("width")),
-    clipHeight: parseInt(d3.select(".speedometerRow").style("width")),
+    clipHeight: parseInt(d3.select(".speedometerRow").style("width")) * 2,
     ringWidth: 2,
     maxValue: 9,
     transitionMs: 2000,
@@ -1004,7 +1048,7 @@ function onDocumentReady2() {
   var powerGauge = gauge("#speedometer2", {
     size: 220,
     clipWidth: parseInt(d3.select(".speedometerRow").style("width")),
-    clipHeight: parseInt(d3.select(".speedometerRow").style("width")),
+    clipHeight: parseInt(d3.select(".speedometerRow").style("width")) * 2,
     ringWidth: 2,
     maxValue: 9,
     transitionMs: 2000,
