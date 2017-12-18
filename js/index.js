@@ -364,6 +364,7 @@ d3.csv("data/sales.csv", function(error, data) {
         .attrs({
           x: function(d, i) {
             return xScale(d.time);
+       
           },
           y: function(d, i) {
             return d.close < d.open ? yScale(d.high) : yScale(d.low);
@@ -399,32 +400,33 @@ d3.csv("data/sales.csv", function(error, data) {
           .styles({
             stroke: candleSettings.hover
           });
-
         crossLabel
           .attr(
             "d",
-            "M0 10" +
-              "C0 10,0 0,10 0" +
-              "L128 0" +
-              "C138 0,148 0,148 10" +
-              "L148 55" +
-              "C148 55,148 65,138 65" +
-              "L84 65" +
-              "L74 81" +
-              "L64 65" +
-              "L10 65" +
-              "C10 65,0 65,0 55" +
+            "M"+xScale(d.time)+" "+(yScale(d.high)+10)+" " +
+              "C"+xScale(d.time)+" "+(yScale(d.high)+10)+","+xScale(d.time)+" "+yScale(d.high)+","+(xScale(d.time)+10)+" "+yScale(d.high)+" "+
+              "L"+(xScale(d.time)+128)+" "+yScale(d.high)+","+
+              "C"+(xScale(d.time)+138)+" "+yScale(d.high)+","+(xScale(d.time)+148)+" "+yScale(d.high)+","+(xScale(d.time)+148)+" "+(yScale(d.high)+10) +" "+
+              "L"+(xScale(d.time)+148)+" "+(yScale(d.high)+55)+","+
+              "C"+(xScale(d.time)+148)+" "+(yScale(d.high)+55)+","+(xScale(d.time)+148)+" "+(yScale(d.high)+65)+","+(xScale(d.time)+138)+" "+(yScale(d.high)+65) +" "+
+              "L"+(xScale(d.time)+84)+" "+(yScale(d.high)+65)+","+
+              "L"+(xScale(d.time)+74)+" "+(yScale(d.high)+81)+","+
+              "L"+(xScale(d.time)+64)+" "+(yScale(d.high)+65)+","+
+              "L"+(xScale(d.time)+10)+" "+(yScale(d.high)+65)+","+
+              "C"+(xScale(d.time)+10)+" "+(yScale(d.high)+65)+","+(xScale(d.time)+0)+" "+(yScale(d.high)+65)+","+(xScale(d.time)+0)+" "+(yScale(d.high)+55) +" "+
               "Z"
           )
           .attr("fill", "#fff")
+          .attr('transform','translate(-70,-90)')
 
           crossLabelText
-          .text('high'+':'+d.high+'time'+':'+d.time)
+          .text(d.high)
           .attr('fill','red')
           .attr('font-size','20px')
           .attr('font-weight','bold')
-          .attr('x','12')
-          .attr('y','30')
+          .attr('x',xScale(d.time))
+          .attr('y',yScale(d.high))
+          .attr('transform','translate(-50,-60)')
         crosshair.style("display", null);
         setCrosshair(
           xScale(d.time) + xScale.bandwidth() * 0.5,
