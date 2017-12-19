@@ -276,6 +276,9 @@ main {
         align-items: center;
         background: linear-gradient(0deg, #152439, #18273e);
         height: $mainTopHeight;
+        @media #{$laptops} {
+            height: $mainTopHeight-laptops;
+        }
         @media #{$col-sm} {
             display: block;
             height: initial;
@@ -518,8 +521,7 @@ main {
     display: block;
     width: 100%;
     height: 300px;
-    min-width: 300px;
-    // max-width: 1200px;
+    min-width: 300px; // max-width: 1200px;
     max-height: 200px;
     overflow: hidden;
     .domain {
@@ -549,8 +551,7 @@ main {
     display: block;
     width: 100%;
     height: 500px;
-    min-width: 300px;
-    // max-width: 1230px;
+    min-width: 300px; // max-width: 1230px;
     max-height: 600px;
     overflow: hidden;
     .domain {
@@ -588,5 +589,16 @@ main {
             fill: #657180;
             font-size: 13px;
         }
+    }
+}
+
+.circular-breath {
+    animation: breath 1s linear infinite alternate;
+    r: 10;
+}
+
+@keyframes breath {
+    100% {
+        r: 16;
     }
 }

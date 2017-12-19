@@ -117,7 +117,23 @@ d3.csv("data/sales.csv", function(error, data) {
       .attr("id", "candle-chart")
       .attr("width", totalWidth + 60)
       .attr("height", totalHeight);
-
+    // 縮放行為 zoom in zoom out
+    function zoomed() {
+      if (d3.event.sourceEvent && d3.event.sourceEvent.type === "brush") return; // ignore zoom-by-brush
+      // d3.select("g").style("stroke-width", 1.5 / d3.event.transform.k + "px");
+      var t = d3.event.transform;
+      // var xt = t.rescaleX(xScale);
+      // console.log(xt)
+      d3.select("g").attr("transform", t);
+    }
+    svg.call(
+      d3
+        .zoom()
+        .scaleExtent([1, Infinity])
+        .translateExtent([[0, 0], [width, height]])
+        .extent([[0, 0], [width, height]])
+        .on("zoom", zoomed)
+    );
     var mainGroup = svg
       .append("g")
       .attr("id", "mainGroup")
@@ -129,6 +145,7 @@ d3.csv("data/sales.csv", function(error, data) {
       .attr("class", "axis")
       .attr("transform", "translate( " + 0 + "," + height + ")")
       .call(customXAxis);
+
     function customXAxis(g) {
       g.call(xAxis);
       g.select(".domain").attrs({});
@@ -538,7 +555,8 @@ d3.csv("data/sales.csv", function(error, data) {
           .attr("cx", xScale(d.time))
           .attr("cy", yScale(d.high))
           .attr("fill", "rgba(255,255,255,.6)")
-          .attr("transform", "translate(4,10)");
+          .attr("transform", "translate(4,10)")
+          .attr("class", "circular-breath");
 
         crosshair.style("display", null);
         setCrosshair(
@@ -952,7 +970,7 @@ var gauge = function(container, configuration) {
     var g1text2 = g1.append("text");
     var g1path = g1.append("path");
 
-    g1.attr("transform", "translate(20,220)");
+    g1.attr("transform", "translate(20,220) scale(1)");
     g1path
       .attr(
         "d",
@@ -987,13 +1005,11 @@ var gauge = function(container, configuration) {
       .attr("font-weight", "bold")
       .attr("x", 50)
       .attr("y", 100);
-
     var pg = svg
       .append("g")
       .data([lineData])
       .attr("class", "pointer")
       .attr("transform", centerTx);
-
     pointer = pg
       .append("path")
       .attr("d", pointerLine /*function(d) { return pointerLine(d) +'Z';}*/)
@@ -1001,14 +1017,12 @@ var gauge = function(container, configuration) {
       .attr("fill", "#fff")
       .attr("stroke", "none")
       .attr("transform", "rotate(" + config.minAngle + ")");
-
     pg
       .append("circle")
       .attr("r", 0.09 * r)
       .attr("fill", "#061633")
       .attr("stroke-width", "4px")
       .attr("stroke", "#fff");
-
     update(newValue === undefined ? 0 : newValue);
   }
   that.render = render;
