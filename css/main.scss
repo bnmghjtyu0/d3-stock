@@ -308,46 +308,53 @@ main {
                 margin-right: 0;
                 margin-top: 12px;
             }
-            .stockValue {
+            .stockTable {
                 display: flex;
-                @media #{$col-sm} {
-                    padding: 0 15px;
-                }
-                .item+.item {
-                    &:before {
-                        content: "";
-                        position: absolute;
-                        left: 0;
-                        width: 1px;
-                        height: 60px;
-                        background: nth($colors, 4);
+                dl {
+                    color: #fff !important;
+                    margin-bottom: 0;
+                    &.dl-title {
+                        dt,
+                        dd {
+                            font-size: em($fz + 6);
+                            font-weight: normal;
+                            border: none;
+                        }
                     }
-                }
-                .item {
-                    position: relative;
-                    padding: 20px 60px;
-                    @media #{$col-sm} {
-                        padding: 0;
-                        width: calc(100% / 3);
-                        text-align: center;
+                    &:last-child {
+                        dt,
+                        dd {
+                            border-right: none;
+                        }
                     }
-                    .subText {
-                        font-size: em($fz + 6px);
+                    .stockTable-title {
+                        font-weight: normal;
+                        font-size: em($fz + 3);
                         color: #74a1d3;
+                        margin-right: 12px;
                     }
-                    .num {
-                        font-size: em($fz + 25px);
-                        color: #fff;
-                        @media #{$col-sm} {
-                            display: flex;
-                            flex-direction: column;
-                            align-items: center;
+                    .stockTable-num {
+                        font-size: em($fz + 15);
+                        &.num-rise {
+                            color: red;
                         }
-                        i {
-                            @media #{$col-sm} {
-                                display: block;
-                            }
+                        &.num-fall {
+                            color: #0cd562;
                         }
+                    }
+                    dt,
+                    dd {
+                        height: 50px;
+                        display: flex;
+                        align-items: center;
+                        padding: 8px 30px;
+                    }
+                    dt {
+                        border-right: 1px solid #4c709a;
+                        border-bottom: 1px solid #4c709a;
+                    }
+                    dd {
+                        border-right: 1px solid #4c709a;
                     }
                 }
             }
@@ -579,6 +586,9 @@ main {
         text {
             fill: #657180;
             font-size: 13px;
+            @media #{$laptops} {
+                font-size: 11px;
+            }
         }
     }
 }
@@ -588,6 +598,24 @@ main {
         text {
             fill: #657180;
             font-size: 13px;
+            @media #{$laptops} {
+                font-size: 11px;
+            }
+        }
+    }
+}
+
+.g1 {
+    .g1title {
+        font-size: 18px;
+        @media #{$laptops} {
+            font-size: 15px;
+        }
+    }
+    .g1num {
+        font-size: 32px;
+        @media #{$laptops} {
+            font-size: 24px;
         }
     }
 }

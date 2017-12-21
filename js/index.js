@@ -795,8 +795,8 @@ var gauge = function(container, configuration) {
     pointerTailLength: 5,
     pointerHeadLengthPercent: 0.9,
 
-    minValue: -400,
-    maxValue: 400,
+    minValue: -0,
+    maxValue: 10,
 
     minAngle: -140,
     maxAngle: 140,
@@ -809,8 +809,12 @@ var gauge = function(container, configuration) {
 
     borderColor: "red",
 
-    arcColorFn: d3.interpolateHsl(d3.rgb("#63809E"), d3.rgb("#63809E"))
+    arcColorFn: d3.interpolateHsl(d3.rgb("#63809E"), d3.rgb("#63809E")),
+
+    g1title:'123213',
+    g1num:'123213',
   };
+
   var range = undefined;
   var r = undefined;
   var pointerHeadLength = undefined;
@@ -970,41 +974,85 @@ var gauge = function(container, configuration) {
     var g1text2 = g1.append("text");
     var g1path = g1.append("path");
 
-    g1.attr("transform", "translate(20,220) scale(1)");
+    var g1w = parseInt(d3.select(".speedometerRow").style("width")) - 20;
+    g1.attr("transform", "translate(10," + (g1w+20) + ") scale(1)");
     g1path
       .attr(
         "d",
-        "M0 10" +
+        "M0 10 " +
           "C0 10,0 0,10 0" +
-          "L150 0," +
-          "C150 0,160 0, 160 10," +
-          "L160 120," +
-          "C160 120,160 130,150 130,L10 130," +
-          "C10 130,0 130,0 120," +
+          "L" +
+          (g1w - 10) +
+          " " +
+          "0," +
+          "C" +
+          (g1w - 10) +
+          " 0" +
+          "," +
+          g1w +
+          " 0" +
+          "," +
+          g1w +
+          " 10" +
+          "," +
+          "L" +
+          g1w +
+          " " +
+          "120," +
+          "C" +
+          g1w +
+          " 120" +
+          "," +
+          g1w +
+          " 130" +
+          "," +
+          (g1w - 10) +
+          " 130" +
+          "," +
+          "L" +
+          "10" +
+          " " +
+          "130," +
+          "C" +
+          "10 " +
+          " 130" +
+          "," +
+          "0 " +
+          " 130" +
+          "," +
+          " 0 " +
+          " 120" +
+          "," +
           "Z"
       )
       .attr("stroke", "#4c709a")
       .attr("fill", "none");
     g1hr
-      .attr("d", "M0 52 160 52")
+      .attr("d", "M0 " + "52 " + g1w + " 52")
       .attr("stroke", "#4c709a")
       .attr("fill", "none");
     g1text
-      .text("現貨能量 mlm ")
+      .text(config.g1title)
+      .attr('class','g1title')
+      .attr('dominant-baseline','middle')
+      .attr('text-anchor','middle')
       .attr("stroke", "none")
       .attr("fill", "#4c709a")
       .attr("font-size", "18px")
       .attr("font-weight", "bold")
-      .attr("x", 20)
+      .attr("x", (g1w/2))
       .attr("y", 30);
     g1text2
-      .text("122")
+      .text(config.g1num)
+      .attr('class','g1num')
+      .attr('dominant-baseline','middle')
+      .attr('text-anchor','middle')
       .attr("stroke", "none")
       .attr("fill", "#fff")
-      .attr("font-size", "36px")
+      .attr("font-size", "32px")
       .attr("font-weight", "bold")
-      .attr("x", 50)
-      .attr("y", 100);
+      .attr("x", (g1w/2))
+      .attr("y", 90);
     var pg = svg
       .append("g")
       .data([lineData])
@@ -1053,7 +1101,9 @@ function onDocumentReady() {
     ringWidth: 2,
     maxValue: 9,
     transitionMs: 2000,
-    borderColor: "#00D56A"
+    borderColor: "#00D56A",
+    g1title:'現貨能量 mlm ↓↓',
+    g1num:'0'
   });
   powerGauge.render();
 }
@@ -1066,7 +1116,9 @@ function onDocumentReady2() {
     ringWidth: 2,
     maxValue: 9,
     transitionMs: 2000,
-    borderColor: "#ff0000"
+    borderColor: "#ff0000",
+    g1title:'現貨力道 P80 ↓↓',
+    g1num:'-0.05'
   });
   powerGauge.render();
 }
