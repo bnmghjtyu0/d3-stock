@@ -2,7 +2,7 @@
 // 折線圖
 // ---------------------------------------------------------------------
 
-d3.csv("data/sales.csv", function(error, data) {
+d3.csv("data/sales.csv", function (error, data) {
   var margin = { top: 10, left: 50, bottom: 30, right: 50 };
   var totalWidth =
     parseInt(d3.select("#Candlestick").style("width"), 10) - margin.left;
@@ -10,7 +10,7 @@ d3.csv("data/sales.csv", function(error, data) {
   var width = totalWidth - margin.left - margin.right;
   var height = totalHeight - margin.top - margin.bottom;
 
-  window.addEventListener("resize", function(e) {
+  window.addEventListener("resize", function (e) {
     totalWidth =
       parseInt(d3.select("#Candlestick").style("width"), 10) - margin.left;
     totalHeight = parseInt(d3.select("#Candlestick").style("height"), 10);
@@ -24,7 +24,7 @@ d3.csv("data/sales.csv", function(error, data) {
   var formatDecimal = d3.format(",.2f");
 
   var dataLoaded = null;
-  var dataModule = function(d) {
+  var dataModule = function (d) {
     return {
       date: d.date,
       time: d.time,
@@ -58,9 +58,9 @@ d3.csv("data/sales.csv", function(error, data) {
     xScale = d3
       .scaleBand()
       .domain(
-        data.map(function(d) {
-          return d.time;
-        })
+      data.map(function (d) {
+        return d.time;
+      })
       )
       .range([0, width])
       .paddingInner(0.2)
@@ -69,7 +69,7 @@ d3.csv("data/sales.csv", function(error, data) {
 
     // console.log(xScale.domain())
 
-    xLabels = xScale.domain().filter(function(d, i) {
+    xLabels = xScale.domain().filter(function (d, i) {
       return d;
     });
     xAxis = d3
@@ -119,12 +119,8 @@ d3.csv("data/sales.csv", function(error, data) {
       .attr("height", totalHeight);
     // 縮放行為 zoom in zoom out
     function zoomed() {
-      if (d3.event.sourceEvent && d3.event.sourceEvent.type === "brush") return; // ignore zoom-by-brush
-      // d3.select("g").style("stroke-width", 1.5 / d3.event.transform.k + "px");
       var t = d3.event.transform;
-      // var xt = t.rescaleX(xScale);
-      // console.log(xt)
-      d3.select("g").attr("transform", t);
+      d3.select("#circleGroup").attr("transform", t);
     }
     svg.call(
       d3
@@ -205,39 +201,39 @@ d3.csv("data/sales.csv", function(error, data) {
           .attr("class", "tickA")
           .append("path")
           .attr(
-            "d",
-            "M0 " +
-              height / 2 +
-              " " +
-              (width + 0) +
-              " " +
-              height / 2 +
-              " " +
-              (width + 20) +
-              " " +
-              (height / 2 - 14) +
-              " " +
-              (width + 90) +
-              " " +
-              (height / 2 - 14) +
-              " " +
-              (width + 90) +
-              " " +
-              (height / 2 + 14) +
-              " " +
-              (width + 20) +
-              " " +
-              (height / 2 + 14) +
-              " " +
-              (width + 0) +
-              " " +
-              height / 2
+          "d",
+          "M0 " +
+          height / 2 +
+          " " +
+          (width + 0) +
+          " " +
+          height / 2 +
+          " " +
+          (width + 20) +
+          " " +
+          (height / 2 - 14) +
+          " " +
+          (width + 90) +
+          " " +
+          (height / 2 - 14) +
+          " " +
+          (width + 90) +
+          " " +
+          (height / 2 + 14) +
+          " " +
+          (width + 20) +
+          " " +
+          (height / 2 + 14) +
+          " " +
+          (width + 0) +
+          " " +
+          height / 2
           )
           .attr("stroke", gradColor01)
           .attr("fill", "url(#" + id + ")");
       }
       Guideline.append("text")
-        .text(function(d) {
+        .text(function (d) {
           return data;
         })
         .attrs({
@@ -360,21 +356,21 @@ d3.csv("data/sales.csv", function(error, data) {
       .data(data)
       .enter()
       .append("line")
-      .attr("x1", function(d, i) {
+      .attr("x1", function (d, i) {
         return xScale(d.time) + xScale.bandwidth() * 0.5;
       })
-      .attr("y1", function(d) {
+      .attr("y1", function (d) {
         return yScale(d.high);
       })
-      .attr("x2", function(d, i) {
+      .attr("x2", function (d, i) {
         return xScale(d.time) + xScale.bandwidth() * 0.5;
       })
-      .attr("y2", function(d) {
+      .attr("y2", function (d) {
         return yScale(d.low);
       })
 
       .styles({
-        stroke: function(d) {
+        stroke: function (d) {
           return d.close > d.open
             ? candleSettings.strokeUp
             : candleSettings.strokeDown;
@@ -390,14 +386,14 @@ d3.csv("data/sales.csv", function(error, data) {
         .enter()
         .append("rect")
         .attrs({
-          x: function(d, i) {
+          x: function (d, i) {
             return xScale(d.time);
           },
-          y: function(d, i) {
+          y: function (d, i) {
             return d.close < d.open ? yScale(d.high) : yScale(d.low);
           },
           width: xScale.bandwidth(),
-          height: function(d, i) {
+          height: function (d, i) {
             var max = yScale(Math.min(d.close, d.open));
             var min = yScale(Math.max(d.close, d.open));
             var diff = max - min;
@@ -405,7 +401,7 @@ d3.csv("data/sales.csv", function(error, data) {
           }
         })
         .styles({
-          fill: function(d) {
+          fill: function (d) {
             return d.close > d.open ? candleSettings.up : candleSettings.down;
           },
           stroke: candleSettings.stroke
@@ -418,7 +414,7 @@ d3.csv("data/sales.csv", function(error, data) {
       ? canvasGroup.selectAll("line")
       : canvasGroup.selectAll("rect");
     els
-      .on("mouseover", function(d, i) {
+      .on("mouseover", function (d, i) {
         d3
           .select(this)
           .attrs({
@@ -430,95 +426,95 @@ d3.csv("data/sales.csv", function(error, data) {
 
         crossLabel
           .attr(
-            "d",
-            "M" +
-              xScale(d.time) +
-              " " +
-              (yScale(d.high) + 10) +
-              " " +
-              "C" +
-              xScale(d.time) +
-              " " +
-              (yScale(d.high) + 10) +
-              "," +
-              xScale(d.time) +
-              " " +
-              yScale(d.high) +
-              "," +
-              (xScale(d.time) + 10) +
-              " " +
-              yScale(d.high) +
-              " " +
-              "L" +
-              (xScale(d.time) + 128) +
-              " " +
-              yScale(d.high) +
-              "," +
-              "C" +
-              (xScale(d.time) + 138) +
-              " " +
-              yScale(d.high) +
-              "," +
-              (xScale(d.time) + 148) +
-              " " +
-              yScale(d.high) +
-              "," +
-              (xScale(d.time) + 148) +
-              " " +
-              (yScale(d.high) + 10) +
-              " " +
-              "L" +
-              (xScale(d.time) + 148) +
-              " " +
-              (yScale(d.high) + 55) +
-              "," +
-              "C" +
-              (xScale(d.time) + 148) +
-              " " +
-              (yScale(d.high) + 55) +
-              "," +
-              (xScale(d.time) + 148) +
-              " " +
-              (yScale(d.high) + 65) +
-              "," +
-              (xScale(d.time) + 138) +
-              " " +
-              (yScale(d.high) + 65) +
-              " " +
-              "L" +
-              (xScale(d.time) + 84) +
-              " " +
-              (yScale(d.high) + 65) +
-              "," +
-              "L" +
-              (xScale(d.time) + 74) +
-              " " +
-              (yScale(d.high) + 81) +
-              "," +
-              "L" +
-              (xScale(d.time) + 64) +
-              " " +
-              (yScale(d.high) + 65) +
-              "," +
-              "L" +
-              (xScale(d.time) + 10) +
-              " " +
-              (yScale(d.high) + 65) +
-              "," +
-              "C" +
-              (xScale(d.time) + 10) +
-              " " +
-              (yScale(d.high) + 65) +
-              "," +
-              (xScale(d.time) + 0) +
-              " " +
-              (yScale(d.high) + 65) +
-              "," +
-              (xScale(d.time) + 0) +
-              " " +
-              (yScale(d.high) + 55) +
-              " " +
-              "Z"
+          "d",
+          "M" +
+          xScale(d.time) +
+          " " +
+          (yScale(d.high) + 10) +
+          " " +
+          "C" +
+          xScale(d.time) +
+          " " +
+          (yScale(d.high) + 10) +
+          "," +
+          xScale(d.time) +
+          " " +
+          yScale(d.high) +
+          "," +
+          (xScale(d.time) + 10) +
+          " " +
+          yScale(d.high) +
+          " " +
+          "L" +
+          (xScale(d.time) + 128) +
+          " " +
+          yScale(d.high) +
+          "," +
+          "C" +
+          (xScale(d.time) + 138) +
+          " " +
+          yScale(d.high) +
+          "," +
+          (xScale(d.time) + 148) +
+          " " +
+          yScale(d.high) +
+          "," +
+          (xScale(d.time) + 148) +
+          " " +
+          (yScale(d.high) + 10) +
+          " " +
+          "L" +
+          (xScale(d.time) + 148) +
+          " " +
+          (yScale(d.high) + 55) +
+          "," +
+          "C" +
+          (xScale(d.time) + 148) +
+          " " +
+          (yScale(d.high) + 55) +
+          "," +
+          (xScale(d.time) + 148) +
+          " " +
+          (yScale(d.high) + 65) +
+          "," +
+          (xScale(d.time) + 138) +
+          " " +
+          (yScale(d.high) + 65) +
+          " " +
+          "L" +
+          (xScale(d.time) + 84) +
+          " " +
+          (yScale(d.high) + 65) +
+          "," +
+          "L" +
+          (xScale(d.time) + 74) +
+          " " +
+          (yScale(d.high) + 81) +
+          "," +
+          "L" +
+          (xScale(d.time) + 64) +
+          " " +
+          (yScale(d.high) + 65) +
+          "," +
+          "L" +
+          (xScale(d.time) + 10) +
+          " " +
+          (yScale(d.high) + 65) +
+          "," +
+          "C" +
+          (xScale(d.time) + 10) +
+          " " +
+          (yScale(d.high) + 65) +
+          "," +
+          (xScale(d.time) + 0) +
+          " " +
+          (yScale(d.high) + 65) +
+          "," +
+          (xScale(d.time) + 0) +
+          " " +
+          (yScale(d.high) + 55) +
+          " " +
+          "Z"
           )
           .attr("fill", "#fff")
           .attr("transform", "translate(-70,-90)");
@@ -564,12 +560,12 @@ d3.csv("data/sales.csv", function(error, data) {
           yScale(d.close)
         );
       })
-      .on("mouseout", function(d, i) {
+      .on("mouseout", function (d, i) {
         d3
           .select(this)
           .attrs({})
           .styles({
-            fill: function(d) {
+            fill: function (d) {
               return d.close > d.open ? candleSettings.up : candleSettings.down;
             },
             stroke: candleSettings.stroke,
@@ -579,7 +575,7 @@ d3.csv("data/sales.csv", function(error, data) {
       .transition()
       .duration(1500)
       .ease(d3.easeBackInOut)
-      .attr("y", function(d) {
+      .attr("y", function (d) {
         return yScale(Math.max(d.close, d.open));
       });
     eventRect
@@ -591,10 +587,10 @@ d3.csv("data/sales.csv", function(error, data) {
         opacity: 0.0,
         display: null
       })
-      .on("mouseover", function() {
+      .on("mouseover", function () {
         crosshair.style("display", null);
       })
-      .on("mouseout", function() {
+      .on("mouseout", function () {
         crosshair.style("display", "none");
       })
       .on("mousemove", function handleMouseMove() {
@@ -630,12 +626,12 @@ d3.csv("data/sales.csv", function(error, data) {
       d3
         .select("#focusLineXLabelBackground")
         .attr(
-          "transform",
-          "translate( " +
-            (x - crosshairSettings.xlabelWidth * 0.5) +
-            " , " +
-            (height + 6) +
-            " )"
+        "transform",
+        "translate( " +
+        (x - crosshairSettings.xlabelWidth * 0.5) +
+        " , " +
+        (height + 6) +
+        " )"
         )
         .text(formatDecimal(xScale.domain()[Math.floor(x / xScale.step())]));
       d3
@@ -645,17 +641,17 @@ d3.csv("data/sales.csv", function(error, data) {
       d3
         .select("#focusLineYLabelBackground")
         .attr(
-          "transform",
-          "translate( " +
-            (-crosshairSettings.ylabelWidth - 6) +
-            ", " +
-            (y - 6) +
-            ")"
+        "transform",
+        "translate( " +
+        (-crosshairSettings.ylabelWidth - 6) +
+        ", " +
+        (y - 6) +
+        ")"
         );
     }
   }
 
-  (function(data) {
+  (function (data) {
     setData(data);
     prepareForBuild(data);
     buildChart(data);
@@ -664,117 +660,136 @@ d3.csv("data/sales.csv", function(error, data) {
 // ---------------------------------------------------------------------
 // 長條圖
 // ---------------------------------------------------------------------
-var colors = ["#ff0000", "#0cd562", "#fff"];
-// get the data
+var colors = ["#ff0000", "#0cd562"];
+
 function renderingLongBar() {
-  d3.csv("data/sales.csv", function(error, data) {
+  // 取得資料
+  d3.csv("data/sales.csv", function (error, data) {
     if (error) throw error;
 
-    // format the data
-    data.forEach(function(d) {
+    // 資料格式化 string to number
+    data.forEach(function (d) {
       d.sales = +d.sales;
+
     });
 
+    // 取得DOM
     var longBarChart = d3.select("#longBarChart");
+
     longBarChart.html("");
 
-    var margin = { top: 20, right: 20, bottom: 30, left: 40 },
-      width =
-        parseInt(d3.select("#longBarChart").style("width"), 10) -
-        margin.left * 2,
-      height =
-        parseInt(d3.select("#longBarChart").style("height"), 10) -
-        margin.left * 2;
+    // 設定寬度高度
+    var margin = { top: 20, right: 20, bottom: 30, left: 40 }
+    var width = parseInt(d3.select("#longBarChart").style("width"), 10) - margin.left * 2;
+    var height = (parseInt(d3.select("#longBarChart").style("height"), 10) / 2) - margin.left;
 
-    // set the ranges
+
+    // 設定輸出範圍
     var x = d3
       .scaleBand()
       .range([0, width])
       .padding(0.1);
-    var y = d3.scaleLinear().range([height, 0]);
+    var y = d3.scaleLinear()
+      .range([height, 0]);
 
+    // 建立svg
     var svgBar = longBarChart
       .append("svg")
       .attr("width", width + margin.left + margin.right)
-      .attr("height", height + margin.top + margin.bottom)
+      .attr("height", height * 2 + margin.top + margin.bottom)
       .append("g")
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    // Scale the range of the data in the domains
+    // 設定輸入範圍
     x.domain(
-      data.map(function(d) {
+      data.map(function (d) {
         return d.time;
       })
     );
 
     y.domain([
       0,
-      d3.max(data, function(d) {
+      d3.max(data, function (d) {
         return d.sales;
       })
     ]);
 
-    // append the rectangles for the bar chart
+    // 建立rect，並將x軸資料傳入
     svgBar
       .selectAll(".bar")
       .data(data)
       .enter()
       .append("rect")
       .attr("class", "bar")
-      .attr("x", function(d) {
+      .attr("x", function (d) {
         return x(d.time);
       })
+
+      // 長條圖寬度高度
       .attr("width", x.bandwidth())
-      .attr("y", function(d) {
-        return y(d.sales);
-      })
-      .attr("height", function(d) {
+
+      .attr("height", function (d) {
+        if (d.sales < 0) {
+          return y(d.sales) - height
+        }
         return height - y(d.sales);
       })
-      .style("fill", function(d) {
-        if (d.sales > 15) {
+
+      // 長條圖位置
+      .attr("y", function (d) {
+        if (d.sales < 0) {
+          return height
+        } else {
+          return y(d.sales);
+        }
+      })
+
+      // 長條圖顏色
+      .style("fill", function (d) {
+        if (d.sales > 0) {
           return colors[1];
-        } else if (d.sales >= 10 && d.sales <= 15) {
-          return colors[2];
         } else {
           return colors[0];
         }
       });
-    // add the x Axis
+    // 新增 xAxis 軸線
     svgBar
       .append("g")
       .attr("id", "xAxis")
-      .attr("transform", "translate(0," + height + ")")
+      .attr("transform", "translate(0," + (height * 2) + ")")
       .call(
-        d3
-          .axisBottom(x)
-          .tickValues([
-            "08:00",
-            "09:00",
-            "10:00",
-            "11:00",
-            "12:00",
-            "13:00",
-            "14:00",
-            "15:00",
-            "16:00",
-            "17:00",
-            "18:00",
-            "19:00",
-            "20:00",
-            "21:00",
-            "22:00",
-            "23:00"
-          ])
+      d3
+        .axisBottom(x)
+        .tickValues([
+          "08:00",
+          "09:00",
+          "10:00",
+          "11:00",
+          "12:00",
+          "13:00",
+          "14:00",
+          "15:00",
+          "16:00",
+          "17:00",
+          "18:00",
+          "19:00",
+          "20:00",
+          "21:00",
+          "22:00",
+          "23:00"
+        ])
       );
 
-    // add the y Axis
-    svgBar.append("g").call(d3.axisLeft(y).tickValues(["40"]));
+    // 新增 yAxis 軸線
+    svgBar.append("g")
+      .attr("id", "yAxis")
+      .call(d3.axisLeft(y)
+        .tickValues(["-50", "0", "50"]))
   });
 }
 
 // 將 window 綁定 resize 事件，並重新繪製圖型
-d3.select(window).on("resize", function(e) {
+d3.select(window).on("resize", function (e) {
   renderingLongBar(e);
 });
 renderingLongBar();
@@ -782,7 +797,7 @@ renderingLongBar();
 // ---------------------------------------------------------------------
 // 儀錶板
 // ---------------------------------------------------------------------
-var gauge = function(container, configuration) {
+var gauge = function (container, configuration) {
   var that = {};
   var config = {
     size: parseInt(d3.select(".speedometerRow").style("width")),
@@ -811,8 +826,8 @@ var gauge = function(container, configuration) {
 
     arcColorFn: d3.interpolateHsl(d3.rgb("#63809E"), d3.rgb("#63809E")),
 
-    g1title:'123213',
-    g1num:'123213',
+    g1title: '123213',
+    g1num: '123213',
   };
 
   var range = undefined;
@@ -856,7 +871,7 @@ var gauge = function(container, configuration) {
       .domain([config.minValue, config.maxValue]);
 
     ticks = scale.ticks(config.majorTicks);
-    tickData = d3.range(config.majorTicks).map(function() {
+    tickData = d3.range(config.majorTicks).map(function () {
       return 1 / config.majorTicks;
     });
 
@@ -864,11 +879,11 @@ var gauge = function(container, configuration) {
       .arc()
       .innerRadius(r - config.ringWidth - config.ringInset)
       .outerRadius(r - config.ringInset)
-      .startAngle(function(d, i) {
+      .startAngle(function (d, i) {
         var ratio = d * i;
         return deg2rad(config.minAngle + ratio * range);
       })
-      .endAngle(function(d, i) {
+      .endAngle(function (d, i) {
         var ratio = d * (i + 1);
         return deg2rad(config.minAngle + ratio * range);
       });
@@ -899,12 +914,12 @@ var gauge = function(container, configuration) {
       .attr("x", -6)
       .attr("y", -40)
       .attr(
-        "width",
-        parseInt(d3.select(".speedometerRow").style("width")) / 2.1
+      "width",
+      parseInt(d3.select(".speedometerRow").style("width")) / 2.1
       )
       .attr(
-        "height",
-        parseInt(d3.select(".speedometerRow").style("width")) / 1
+      "height",
+      parseInt(d3.select(".speedometerRow").style("width")) / 1
       );
 
     svg
@@ -914,8 +929,8 @@ var gauge = function(container, configuration) {
       .attr("cy", parseInt(d3.select(".speedometerRow").style("width")) / 2.2)
       .attr("r", parseInt(d3.select(".speedometerRow").style("width")) / 2.2)
       .attr(
-        "stroke-width",
-        parseInt(d3.select(".speedometerRow").style("width")) / 45
+      "stroke-width",
+      parseInt(d3.select(".speedometerRow").style("width")) / 45
       )
       .attr("stroke", config.borderColor)
       .attr("fill", "none")
@@ -933,7 +948,7 @@ var gauge = function(container, configuration) {
       .data(tickData)
       .enter()
       .append("path")
-      .attr("fill", function(d, i) {
+      .attr("fill", function (d, i) {
         return config.arcColorFn(d * i);
       })
       .attr("d", arc);
@@ -947,7 +962,7 @@ var gauge = function(container, configuration) {
       .data(ticks)
       .enter()
       .append("text")
-      .attr("transform", function(d) {
+      .attr("transform", function (d) {
         var ratio = scale(d);
         var newAngle = config.minAngle + ratio * range;
         return (
@@ -975,55 +990,55 @@ var gauge = function(container, configuration) {
     var g1path = g1.append("path");
 
     var g1w = parseInt(d3.select(".speedometerRow").style("width")) - 20;
-    g1.attr("transform", "translate(10," + (g1w+20) + ") scale(1)");
+    g1.attr("transform", "translate(10," + (g1w + 20) + ") scale(1)");
     g1path
       .attr(
-        "d",
-        "M0 10 " +
-          "C0 10,0 0,10 0" +
-          "L" +
-          (g1w - 10) +
-          " " +
-          "0," +
-          "C" +
-          (g1w - 10) +
-          " 0" +
-          "," +
-          g1w +
-          " 0" +
-          "," +
-          g1w +
-          " 10" +
-          "," +
-          "L" +
-          g1w +
-          " " +
-          "120," +
-          "C" +
-          g1w +
-          " 120" +
-          "," +
-          g1w +
-          " 130" +
-          "," +
-          (g1w - 10) +
-          " 130" +
-          "," +
-          "L" +
-          "10" +
-          " " +
-          "130," +
-          "C" +
-          "10 " +
-          " 130" +
-          "," +
-          "0 " +
-          " 130" +
-          "," +
-          " 0 " +
-          " 120" +
-          "," +
-          "Z"
+      "d",
+      "M0 10 " +
+      "C0 10,0 0,10 0" +
+      "L" +
+      (g1w - 10) +
+      " " +
+      "0," +
+      "C" +
+      (g1w - 10) +
+      " 0" +
+      "," +
+      g1w +
+      " 0" +
+      "," +
+      g1w +
+      " 10" +
+      "," +
+      "L" +
+      g1w +
+      " " +
+      "120," +
+      "C" +
+      g1w +
+      " 120" +
+      "," +
+      g1w +
+      " 130" +
+      "," +
+      (g1w - 10) +
+      " 130" +
+      "," +
+      "L" +
+      "10" +
+      " " +
+      "130," +
+      "C" +
+      "10 " +
+      " 130" +
+      "," +
+      "0 " +
+      " 130" +
+      "," +
+      " 0 " +
+      " 120" +
+      "," +
+      "Z"
       )
       .attr("stroke", "#4c709a")
       .attr("fill", "none");
@@ -1033,25 +1048,25 @@ var gauge = function(container, configuration) {
       .attr("fill", "none");
     g1text
       .text(config.g1title)
-      .attr('class','g1title')
-      .attr('dominant-baseline','middle')
-      .attr('text-anchor','middle')
+      .attr('class', 'g1title')
+      .attr('dominant-baseline', 'middle')
+      .attr('text-anchor', 'middle')
       .attr("stroke", "none")
       .attr("fill", "#4c709a")
       .attr("font-size", "18px")
       .attr("font-weight", "bold")
-      .attr("x", (g1w/2))
+      .attr("x", (g1w / 2))
       .attr("y", 30);
     g1text2
       .text(config.g1num)
-      .attr('class','g1num')
-      .attr('dominant-baseline','middle')
-      .attr('text-anchor','middle')
+      .attr('class', 'g1num')
+      .attr('dominant-baseline', 'middle')
+      .attr('text-anchor', 'middle')
       .attr("stroke", "none")
       .attr("fill", "#fff")
       .attr("font-size", "32px")
       .attr("font-weight", "bold")
-      .attr("x", (g1w/2))
+      .attr("x", (g1w / 2))
       .attr("y", 90);
     var pg = svg
       .append("g")
@@ -1102,8 +1117,8 @@ function onDocumentReady() {
     maxValue: 9,
     transitionMs: 2000,
     borderColor: "#00D56A",
-    g1title:'現貨能量 mlm ↓↓',
-    g1num:'0'
+    g1title: '現貨能量 mlm ↓↓',
+    g1num: '0'
   });
   powerGauge.render();
 }
@@ -1117,8 +1132,8 @@ function onDocumentReady2() {
     maxValue: 9,
     transitionMs: 2000,
     borderColor: "#ff0000",
-    g1title:'現貨力道 P80 ↓↓',
-    g1num:'-0.05'
+    g1title: '現貨力道 P80 ↓↓',
+    g1num: '-0.05'
   });
   powerGauge.render();
 }
@@ -1126,7 +1141,7 @@ function onDocumentReady2() {
 if (!window.isLoaded) {
   window.addEventListener(
     "load",
-    function() {
+    function () {
       onDocumentReady();
       onDocumentReady2();
     },
