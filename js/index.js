@@ -673,32 +673,31 @@ function renderingLongBar() {
 
     });
 
-    // 取得DOM
+    // 宣告DOM
     var longBarChart = d3.select("#longBarChart");
-
     longBarChart.html("");
 
-    // 設定寬度高度
-    var margin = { top: 20, right: 20, bottom: 30, left: 40 }
-    var width = parseInt(d3.select("#longBarChart").style("width"), 10) - margin.left * 2;
-    var height = (parseInt(d3.select("#longBarChart").style("height"), 10) / 2) - margin.left;
-
-
-    // 設定輸出範圍
-    var x = d3
-      .scaleBand()
-      .range([0, width])
-      .padding(0.1);
-    var y = d3.scaleLinear()
-      .range([height, 0]);
+    // 宣告寬度高度
+    var margin = { top: 20, right: 20, bottom: 40, left: 20 }
+    var width = parseInt(d3.select("#longBarChart").style("width"), 10) - margin.left * 2 - margin.right * 2;
+    var height = parseInt(d3.select("#longBarChart").style("height"), 10) - margin.bottom;
 
     // 建立svg
     var svgBar = longBarChart
       .append("svg")
       .attr("width", width + margin.left + margin.right)
-      .attr("height", height * 2 + margin.top + margin.bottom)
-      .append("g")
+      .attr("height", height + margin.top + margin.bottom)
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    var layout = svgBar.append("g")
+      .attr("transform", "translate(0,0)")
+    // 設定輸出範圍
+    var x = d3
+      .scaleBand()
+      .range([0, width])
+      .padding(0.3);
+    var y = d3.scaleLinear()
+      .range([height, 0]);
 
     // 設定輸入範圍
     x.domain(
@@ -708,55 +707,82 @@ function renderingLongBar() {
     );
 
     y.domain([
-      0,
+      d3.min(data, function (d) {
+        return -Math.abs(d.sales);
+      })
+      ,
       d3.max(data, function (d) {
-        return d.sales;
+        return Math.abs(d.sales);
       })
     ]);
 
     // 建立rect，並將x軸資料傳入
-    svgBar
+    layout
       .selectAll(".bar")
       .data(data)
       .enter()
       .append("rect")
       .attr("class", "bar")
+      .attr('transform', 'translate(30,0)')
       .attr("x", function (d) {
         return x(d.time);
       })
 
       // 長條圖寬度高度
       .attr("width", x.bandwidth())
-
       .attr("height", function (d) {
         if (d.sales < 0) {
-          return y(d.sales) - height
+          return 0
         }
-        return height - y(d.sales);
+        return 0
       })
 
       // 長條圖位置
+
       .attr("y", function (d) {
         if (d.sales < 0) {
-          return height
+          return height / 2;
         } else {
-          return y(d.sales);
+          return height / 2;
         }
       })
 
       // 長條圖顏色
       .style("fill", function (d) {
         if (d.sales > 0) {
-          return colors[1];
-        } else {
           return colors[0];
+        } else {
+          return colors[1];
         }
-      });
+      })
+      // 特效~
+      .transition()
+      .duration(1500)
+      .delay(function (d, i) { return Math.random()*10*i; })
+
+      // 長條圖寬度高度 (特效)
+      .attr("width", x.bandwidth())
+      .attr("height", function (d) {
+        if (d.sales < 0) {
+          return (height - y(Math.abs(d.sales))) / 2;
+        }
+        return (height - y(d.sales)) / 2;
+      })
+      // 長條圖位置 (特效)
+      .attr("y", function (d) {
+        if (d.sales < 0) {
+          return height / 2;
+        } else {
+          return y(d.sales) / 2;
+        }
+      })
+
+
     // 新增 xAxis 軸線
-    svgBar
+    layout
       .append("g")
       .attr("id", "xAxis")
-      .attr("transform", "translate(0," + (height * 2) + ")")
+      .attr("transform", "translate(30," + height + ")")
       .call(
       d3
         .axisBottom(x)
@@ -781,10 +807,12 @@ function renderingLongBar() {
       );
 
     // 新增 yAxis 軸線
-    svgBar.append("g")
+    layout.append("g")
       .attr("id", "yAxis")
+      .attr("transform", "translate(30,0)")
       .call(d3.axisLeft(y)
-        .tickValues(["-50", "0", "50"]))
+        .ticks(3)
+      )
   });
 }
 
