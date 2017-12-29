@@ -309,10 +309,29 @@ main {
                 margin-top: 12px;
             }
             .stockTable {
+                position: relative;
                 display: flex;
+                @media #{$col-xs} {
+                    display: block;
+                    border: 1px solid #4c709a;
+                    margin: 0 20px;
+                    &:after {
+                        content: '';
+                        width: 1px;
+                        background: #4c709a;
+                        display: block;
+                        height: 100%;
+                        left: 50%;
+                        top: 0;
+                        position: absolute;
+                    }
+                }
                 dl {
                     color: #fff !important;
                     margin-bottom: 0;
+                    @media #{$col-xs} {
+                        display: flex;
+                    }
                     &.dl-title {
                         dt,
                         dd {
@@ -348,13 +367,23 @@ main {
                         display: flex;
                         align-items: center;
                         padding: 8px 30px;
+                        @media #{$col-xs} {
+                            width: 50%;
+                            border: 1px solid #4c709a;
+                        }
                     }
                     dt {
                         border-right: 1px solid #4c709a;
                         border-bottom: 1px solid #4c709a;
+                        @media #{$col-xs} {
+                            border: none;
+                        }
                     }
                     dd {
                         border-right: 1px solid #4c709a;
+                        @media #{$col-xs} {
+                            border: none;
+                        }
                     }
                 }
             }
@@ -531,6 +560,9 @@ main {
     min-width: 300px; // max-width: 1200px;
     max-height: 160px;
     overflow: hidden;
+    @media #{$col-xs} {
+        display: none;
+    }
     .domain {
         stroke: #48678b;
     }
@@ -561,6 +593,9 @@ main {
     min-width: 300px; // max-width: 1230px;
     max-height: 600px;
     overflow: hidden;
+    @media #{$col-xs} {
+        display: none;
+    }
     .domain {
         stroke: #48678b;
     }
@@ -611,11 +646,17 @@ main {
         @media #{$laptops} {
             font-size: 15px;
         }
+        @media #{$col-xs} {
+            font-size: 15px;
+        }
     }
     .g1num {
         font-size: 32px;
         @media #{$laptops} {
             font-size: 24px;
+        }
+        @media #{$col-xs} {
+            font-size: 20px;
         }
     }
 }

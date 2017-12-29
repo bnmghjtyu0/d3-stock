@@ -117,19 +117,7 @@ d3.csv("data/sales.csv", function (error, data) {
       .attr("id", "candle-chart")
       .attr("width", totalWidth + 60)
       .attr("height", totalHeight);
-    // 縮放行為 zoom in zoom out
-    function zoomed() {
-      var t = d3.event.transform;
-      d3.select("#circleGroup").attr("transform", t);
-    }
-    svg.call(
-      d3
-        .zoom()
-        .scaleExtent([1, Infinity])
-        .translateExtent([[0, 0], [width, height]])
-        .extent([[0, 0], [width, height]])
-        .on("zoom", zoomed)
-    );
+
     var mainGroup = svg
       .append("g")
       .attr("id", "mainGroup")
@@ -758,7 +746,7 @@ function renderingLongBar() {
       // 特效~
       .transition()
       .duration(1500)
-      .delay(function (d, i) { return Math.random()*10*i; })
+      .delay(function (d, i) { return Math.random() * 10 * i; })
 
       // 長條圖寬度高度 (特效)
       .attr("width", x.bandwidth())
@@ -854,8 +842,8 @@ var gauge = function (container, configuration) {
 
     arcColorFn: d3.interpolateHsl(d3.rgb("#63809E"), d3.rgb("#63809E")),
 
-    g1title: '123213',
-    g1num: '123213',
+    g1title: '',
+    g1num: '',
   };
 
   var range = undefined;
@@ -1136,6 +1124,7 @@ var gauge = function (container, configuration) {
   return that;
 };
 
+
 function onDocumentReady() {
   var powerGauge = gauge("#speedometer", {
     size: 220,
@@ -1165,17 +1154,26 @@ function onDocumentReady2() {
   });
   powerGauge.render();
 }
-
-if (!window.isLoaded) {
-  window.addEventListener(
-    "load",
-    function () {
-      onDocumentReady();
-      onDocumentReady2();
-    },
-    false
-  );
-} else {
-  onDocumentReady();
-  onDocumentReady2();
+function resize(e) {
+  console.log(svg)
+  // svg.html("");
+  isLoaded();
 }
+window.addEventListener('resize', resize);
+
+function isLoaded() {
+  if (!window.isLoaded) {
+    window.addEventListener(
+      "load",
+      function () {
+        onDocumentReady();
+        onDocumentReady2();
+      },
+      false
+    );
+  } else {
+    onDocumentReady();
+    onDocumentReady2();
+  }
+}
+isLoaded();
